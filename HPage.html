@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>写真集</title>
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #f5f5f5;
+  }
+  #viewer {
+    width: 80%;
+    max-width: 600px;
+    margin: 30px auto;
+    border: 3px solid #ccc;
+    background: white;
+    padding: 10px;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+  .btn-area {
+    margin-top: 20px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>写真集</h1>
+
+<div id="viewer">
+  <img id="photo" src="img/photo1.jpg">
+</div>
+
+<div class="btn-area">
+  <button onclick="prev()">← 前へ</button>
+  <button onclick="next()">次へ →</button>
+</div>
+
+<script>
+  // 画像ファイル名のリスト（10枚）
+  const photos = [
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2025-11-03_23-04-48.690_2560x1440.png?raw=true",
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2025-11-25_08-31-24.950_1440x2560.png?raw=true",
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2025-11-25_08-36-22.402_1440x2560.png?raw=true",
+    "img/photo4.jpg",
+    "img/photo5.jpg",
+    "img/photo6.jpg",
+    "img/photo7.jpg",
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2026-01-02_21-30-58.401_1440x2560.png?raw=true",
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2026-01-04_09-59-13.803_2560x1440.png?raw=true",
+    "https://github.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/blob/main/photo/VRChat_2026-01-09_06-52-16.327_2560x1440.png?raw=true"
+  ];
+
+  let index = 0;
+
+  function updatePhoto() {
+    document.getElementById("photo").src = photos[index];
+  }
+
+  function next() {
+    index = (index + 1) % photos.length;
+    updatePhoto();
+  }
+
+  function prev() {
+    index = (index - 1 + photos.length) % photos.length;
+    updatePhoto();
+  }
+</script>
+
+</body>
+</html>
