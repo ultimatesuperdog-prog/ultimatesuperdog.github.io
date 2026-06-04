@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+                <style>.parent{display: flex;
+    justify-content: center;
+    height: 100vh; 
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.result{
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;    
+    border-radius: 15px;
+    height: 350px;
+}
+@keyframes slide_ani{
+    from{transform: translateY(-101%);}
+    to{transform: translateY(0%);}
+}
+.slot {
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: space-around;
+    width: 400px;
+    height: 80px;
+    border-bottom: 150px solid rgb(202, 0, 0);
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    border-top: 100px solid rgb(175, 0, 0);
+    transform-style: preserve-3d;
+    position: relative;        
+    overflow: hidden; 
+}
+
+.slot > div {
+    transform-style: preserve-3d;
+    position: relative;
+    height: 100%;
+}
+
+.slide1,.slide2,.slide3 {
+    width: 70px;
+    height: auto;
+    animation: slide_ani 0.1s infinite linear;
+    background-color: white;
+    border: 5px rgb(255, 39, 39) solid;
+}
+
+.button_div{
+    display: flex;
+    justify-content: space-around;
+    background-color:rgb(255, 59, 59);
+    width: 400px;
+    height: 50px;
+    transform: translateY(-100px);
+}
+
+input{
+    width: 50px;
+    border-radius: 50px;
+}
+
+body{
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+}
+
+.lever{
+    width: 10px;
+    height: auto;
+    transform: translateY(-50px);
+    padding-right: 20px;
+}
+
+.circle{
+    background-color: red;
+    border: 5px white solid;
+    width: 40px;
+    height: 40px;
+    border-radius: 90px;
+    transform: translateX(-5px);
+}
+
+.bar{
+    border: 5px white solid;
+    background-color: rgb(191, 191, 191);
+    width: 20px;
+    height: 200px;
+}
+
+@keyframes bar{
+    from{
+        
+    }
+    to{
+    transform:translateY(40%) scaleY(20%);
+    }
+}
+@keyframes circle{
+    from{
+    transform:  translateX(-5px);
+    }
+    to{
+    transform:  translateX(-5px) translateY(425%);
+    }
+}
+
+#flash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  pointer-events: none; /* クリック操作を邪魔しない */
+  z-index: 9999;
+  opacity: 0;
+}
+
+.flash-active {
+  animation: flashEffect 0.5s ease-out;
+}
+
+@keyframes flashEffect {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>
+            </head>
+            <body onload="start()">
+                
+
+
+
+    <meta charaset="UTF-8">
+    <meta name="author" content="IT-College">
+    <title>welcome HTML</title>
+
+
+
+
+<div id="flash-overlay" class="flash-off"></div>
+<div class="parent">
+    <div class="lever">
+        <input type="button" class="circle" onclick="rebutton()" id="rbtn" style="animation: auto ease 0s 1 normal none running none;">
+        <div class="bar" style="animation: auto ease 0s 1 normal none running none;">
+        </div>
+    </div>
+    <div>
+<div class="slot">
+    <div>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+    </div>
+    <div>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+    </div>
+    <div>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+    </div>
+</div>
+<div class="button_div">
+    <input type="button" id="btn1" onclick="button1()" disabled="">
+    <input type="button" id="btn2" onclick="button2()" disabled="">
+    <input type="button" id="btn3" onclick="button3()" disabled="">
+</div>
+    </div>
+<div class="result">
+<p id="avg">予測WIN確率：2.04% / 予測リーチ確率：14.29%<br><br>プレイ回数：0<br>リーチの回数：0 (NaN%)<br>WIN回数：0 (NaN%)</p>
+</div>
+</div>
+
+
+                <script>let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
+            'https://cultofthepartyparrot.com/parrots/hd/parrot.gif',
+            'https://cultofthepartyparrot.com/parrots/hd/ultrafastparrot.gif',
+            'https://cultofthepartyparrot.com/parrots/hd/boredparrot.gif',
+            'https://cultofthepartyparrot.com/parrots/hd/githubparrot.gif',
+            'https://cultofthepartyparrot.com/other-parrots/hd/Cinnamon_Cockatiel.gif',
+            'https://cultofthepartyparrot.com/guests/hd/vibepartycat.gif'
+            ];
+
+let slot1 = 0;
+let slot2 = 0;
+let slot3 = 0;
+let t_count = 0;
+let r_count = 0;
+let w_count = 0;
+let wavg = img.length/(img.length**3);
+wavg = Math.round(wavg * 100*100) / 100;
+let ravg = img.length/(img.length**2);
+ravg = Math.round(ravg * 100*100) /100;
+
+function start(){
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    document.getElementById('btn3').disabled = true;
+
+    document.querySelectorAll('.slide1').forEach(function(slide){
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(0%)';
+});
+    document.querySelectorAll('.slide2').forEach(function(slide){
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(0%)';
+});
+    document.querySelectorAll('.slide3').forEach(function(slide){
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(0%)';
+});
+    document.querySelectorAll('.circle').forEach(function(circle){
+    circle.style.animation = 'none';
+});
+    document.querySelectorAll('.bar').forEach(function(bar){
+    bar.style.animation = 'none';
+});
+    updateCount();
+}
+
+
+function button1(){
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = false;
+document.querySelectorAll('.slide1').forEach(function(slide) {
+    slot1 = Math.floor(Math.random() * img.length);
+    slide.src = img[slot1];
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(-106%)';
+    document.querySelectorAll('.circle').forEach(function(circle){
+    circle.style.animation = 'none';
+});
+    document.querySelectorAll('.bar').forEach(function(bar){
+    bar.style.animation = 'none';
+});
+});
+}
+function button2(){
+    document.getElementById('btn2').disabled = true;
+    document.getElementById('btn3').disabled = false;
+document.querySelectorAll('.slide2').forEach(function(slide) {
+    slot2 = Math.floor(Math.random() * img.length);
+    slide.src = img[slot2];
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(-106%)';
+});
+
+if(slot1==slot2){
+  const overlay = document.getElementById('flash-overlay');
+  overlay.className = '';
+  setTimeout(() => {
+    overlay.className = 'flash-active';
+  }, 10);
+    alert("リーチ!!");
+    r_count++;
+    updateCount();
+    document.body.style.backgroundImage = "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";    
+}
+
+}
+function button3(){
+    document.getElementById('btn3').disabled = true;
+    document.getElementById('rbtn').disabled = false;
+document.querySelectorAll('.slide3').forEach(function(slide) {
+    slot3 = Math.floor(Math.random() * img.length);
+    slide.src = img[slot3];
+    slide.style.animation = 'none';
+    slide.style.transform = 'translateY(-106%)';
+});
+if(slot1==slot2 && slot2==slot3){
+  const overlay = document.getElementById('flash-overlay');
+  overlay.className = '';
+  setTimeout(() => {
+    overlay.className = 'flash-active';
+  }, 10);
+    alert("勝利はあなたの手に...");
+    w_count++;
+    updateCount();
+    document.body.style.backgroundImage = "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')"; 
+}else{
+        document.body.style.backgroundImage = "none";
+    }
+}
+
+function rebutton(){
+    t_count++;
+    updateCount();
+    document.body.style.backgroundImage = "none";
+    document.querySelectorAll('.circle').forEach(function(circle){
+    circle.style.animation = 'circle 1 0.3s alternate';
+});
+    document.querySelectorAll('.bar').forEach(function(bar){
+    bar.style.animation = 'bar 1 0.3s alternate';
+});
+
+    document.getElementById('rbtn').disabled = true;
+document.querySelectorAll('.slide1').forEach(function(slide) {
+    slide.style.animation = '';
+    slide.src = 'https://cultofthepartyparrot.com/parrots/hd/parrot.gif';
+});
+document.querySelectorAll('.slide2').forEach(function(slide) {
+    slide.style.animation = '';
+    slide.src = 'https://cultofthepartyparrot.com/parrots/hd/parrot.gif';
+});
+document.querySelectorAll('.slide3').forEach(function(slide) {
+    slide.style.animation = '';
+    slide.src = 'https://cultofthepartyparrot.com/parrots/hd/parrot.gif';
+});
+    document.getElementById('btn1').disabled = false;
+}
+
+
+function updateCount(){
+document.getElementById('avg').innerHTML = 
+"予測WIN確率："+wavg+"% / "
++"予測リーチ確率："+ ravg +"%"
++"<br><br>"
++"プレイ回数："+t_count+"<br>"
++"リーチの回数："+r_count+" ("+Math.round(r_count/t_count*100*100)/100+"%)"+"<br>"
++"WIN回数："+w_count+" ("+Math.round(w_count/t_count*100*100)/100+"%)";
+}
+</script>
+            
+        
+    </body>
