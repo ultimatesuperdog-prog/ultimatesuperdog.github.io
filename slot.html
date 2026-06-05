@@ -181,6 +181,7 @@ body{
 </div>
 <div class="result">
 <p id="avg"></p>
+    <input type="button" value="データリセット" onclick="resetData()">
 </div>
 </div>
 </body>
@@ -205,6 +206,8 @@ let ravg = img.length/(img.length**2);
 ravg = Math.round(ravg * 100*100) /100;
 
 function start(){
+    loadData();
+
     document.getElementById('btn1').disabled = true;
     document.getElementById('btn2').disabled = true;
     document.getElementById('btn3').disabled = true;
@@ -266,6 +269,7 @@ if(slot1==slot2){
   }, 10);
     alert("リーチ!!");
     r_count++;
+    saveData();
     updateCount();
     document.body.style.backgroundImage = "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";    
 }
@@ -288,6 +292,7 @@ if(slot1==slot2 && slot2==slot3){
   }, 10);
     alert("勝利はあなたの手に...");
     w_count++;
+    saveData();
     updateCount();
     document.body.style.backgroundImage = "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')"; 
 }else{
@@ -297,6 +302,7 @@ if(slot1==slot2 && slot2==slot3){
 
 function rebutton(){
     t_count++;
+    saveData();
     updateCount();
     document.body.style.backgroundImage = "none";
     document.querySelectorAll('.circle').forEach(function(circle){
@@ -384,4 +390,34 @@ function toggleAuto() {
 
         document.getElementById("autobtn").value = "自動モードON";
     }
+}
+
+// 保存
+function saveData() {
+    localStorage.setItem("slotData", JSON.stringify({
+        play: t_count,
+        reach: r_count,
+        win: w_count
+    }));
+}
+
+// 読み込み
+function loadData() {
+    const data = JSON.parse(localStorage.getItem("slotData"));
+
+    if (data) {
+        t_count = data.play || 0;
+        r_count = data.reach || 0;
+        w_count = data.win || 0;
+    }
+}
+
+function resetData(){
+    localStorage.removeItem("slotData");
+
+    t_count = 0;
+    r_count = 0;
+    w_count = 0;
+
+    updateCount();
 }</script>
