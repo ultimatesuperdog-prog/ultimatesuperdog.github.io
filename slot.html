@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
-
-<head><style>.parent{display: flex;
+<head>
+                <style>.parent{display: flex;
     justify-content: center;
     height: 100vh; 
     align-items: center;
@@ -142,50 +141,57 @@ body{
   }
 }
 </style>
+            </head>
+            <body onload="start()">
+                
+
+
+
     <meta charaset="UTF-8">
     <title>party or die</title>
-</head>
 
-<body onload="start()">
+
+
 
 <div id="flash-overlay" class="flash-off"></div>
 <div class="parent">
     <div class="lever">
-        <input type="button" class="circle"onclick="rebutton()" id="rbtn">
-        <div  class="bar">
+        <input type="button" class="circle" onclick="rebutton()" id="rbtn" style="animation: auto ease 0s 1 normal none running none;">
+        <div class="bar" style="animation: auto ease 0s 1 normal none running none;">
         </div>
     </div>
     <div>
 <div class="slot">
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
     </div>
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
     </div>
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
     </div>
 </div>
 <div class="button_div">
-    <input type="button" id="btn1" onclick="button1()">
-    <input type="button" id="btn2" onclick="button2()">
-    <input type="button" id="btn3" onclick="button3()">
+    <input type="button" id="btn1" onclick="button1()" disabled="">
+    <input type="button" id="btn2" onclick="button2()" disabled="">
+    <input type="button" id="btn3" onclick="button3()" disabled="">
 </div>
 <div style="text-align:center">
 <input type="button" value="自動モードON" onclick="toggleAuto()" id="autobtn" class="bb">
 </div>
 </div>
 <div class="result">
-<p id="avg"></p>
-    <input type="button" value="データリセット" onclick="resetData()">
+<p id="avg">予測WIN確率：2.04% / 予測リーチ確率：14.29%<br><br>プレイ回数：13<br>リーチの回数：5 (38.46%)<br>WIN回数：3 (23.08%)</p>
+<input type="button" value="データリセット" onclick="resetData()">
 </div>
 </div>
-</body>
-</html><script>let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
+
+
+                <script>let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/parrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/ultrafastparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/boredparrot.gif',
@@ -261,7 +267,9 @@ document.querySelectorAll('.slide2').forEach(function(slide) {
 });
 
 if(slot1==slot2){
+    if(autoMode == true){
     document.getElementById("autobtn").click();
+    }
   const overlay = document.getElementById('flash-overlay');
   overlay.className = '';
   setTimeout(() => {
@@ -421,3 +429,6 @@ function resetData(){
 
     updateCount();
 }</script>
+            
+        
+    </body>
