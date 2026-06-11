@@ -13,7 +13,6 @@
     background-color: rgba(255, 255, 255, 0.8);
     padding: 15px;    
     border-radius: 15px;
-    height: 350px;
 }
 @keyframes slide_ani{
     from{transform: translateY(-101%);}
@@ -120,7 +119,7 @@ body{
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
-  pointer-events: none;
+  pointer-events: none; /* クリック操作を邪魔しない */
   z-index: 9999;
   opacity: 0;
 }
@@ -140,20 +139,244 @@ body{
     opacity: 0;
   }
 }
-</style>
+
+.result{
+min-width:250px;
+max-width:300px;
+height:auto;
+overflow-y:auto;
+}
+
+.result h2{
+margin-top:0;
+text-align:center;
+color:#b30000;
+}
+
+.result button{
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.result button:hover{
+transform:scale(1.03);
+}
+
+#logBox{
+height:150px;
+overflow-y:auto;
+background:black;
+color:#00ff00;
+padding:10px;
+border-radius:10px;
+font-size:12px;
+font-family:monospace;
+}
+
+#collectionList,
+#achievementList{
+padding-left:20px;
+}
+
+.locked{
+color:gray;
+}
+
+.unlocked{
+color:limegreen;
+font-weight:bold;
+}
+
+.shop-max{
+background:#777;
+color:white;
+}
+
+.shop-buy{
+background:#ffcc00;
+}
+
+.shop-buy:hover
+
+.shop-special{
+background:#ff6666;
+color:white;
+}
+
+.shop-special:hover
+
+hr{
+margin-top:15px;
+margin-bottom:15px;
+}
+
+@media(max-width:1200px){
+
+.parent{
+flex-wrap:wrap;
+height:auto;
+}
+
+.result{
+width:90%;
+max-width:none;
+}
+
+}
+#reachText{
+
+position:fixed;
+
+top:50%;
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+font-size:120px;
+
+font-weight:bold;
+
+color:gold;
+
+text-shadow:
+0 0 20px red,
+0 0 40px yellow,
+0 0 60px white;
+
+z-index:99999;
+
+display:none;
+
+pointer-events:none;
+}
+
+.reach-show{
+
+display:block;
+animation:
+reachAnim
+0.5s infinite;
+}
+
+@keyframes reachAnim{
+
+0%{
+transform:
+translate(-50%,-50%)
+scale(0.1)
+rotate(-30deg);
+
+opacity:0;
+}
+
+20%{
+opacity:1;
+}
+
+50%{
+transform:
+translate(-50%,-50%)
+scale(1.5)
+rotate(5deg);
+}
+
+100%{
+transform:
+translate(-50%,-50%)
+scale(2);
+
+opacity:0;
+}
+}
+
+.blessing{
+
+font-weight:bold;
+
+animation:
+rainbow 1s linear infinite;
+
+text-shadow:
+0 0 5px white,
+0 0 10px yellow;
+}
+
+@keyframes rainbow{
+
+0%{color:red;}
+16%{color:orange;}
+33%{color:yellow;}
+50%{color:lime;}
+66%{color:cyan;}
+83%{color:blue;}
+100%{color:violet;}
+
+}
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:
+    rgba(0,0,0,0.8);
+
+    z-index:999999;
+}
+
+.modal-content{
+
+    background:rgba(255, 255, 255, 0.75);
+
+    width:600px;
+
+    max-width:90%;
+
+    margin:50px auto;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    max-height:80vh;
+
+    overflow-y:auto;
+}
+
+.close{
+
+    float:right;
+
+    font-size:30px;
+
+    cursor:pointer;
+}</style>
             </head>
             <body onload="start()">
                 
 
 
 
-    <meta charaset="UTF-8">
+    <meta charset="UTF-8">
     <title>party or die</title>
 
 
 
 
 <div id="flash-overlay" class="flash-off"></div>
+<input type="button" value="How To Play" onclick="openHowTo()">
 <div class="parent">
     <div class="lever">
         <input type="button" class="circle" onclick="rebutton()" id="rbtn" style="animation: auto ease 0s 1 normal none running none;">
@@ -181,17 +404,158 @@ body{
     <input type="button" id="btn3" onclick="button3()" disabled="">
 </div>
 <div style="text-align:center">
-<input type="button" value="自動モードON" onclick="toggleAuto()" id="autobtn" class="bb">
+<input type="button" value="自動モードON" onclick="toggleAuto()" id="autobtn" class="bb" style="display:none">
 </div>
 </div>
 <div class="result">
-<p id="avg">予測WIN確率：2.04% / 予測リーチ確率：14.29%<br><br>プレイ回数：13<br>リーチの回数：5 (38.46%)<br>WIN回数：3 (23.08%)</p>
+<h2>統計</h2>
+
+<p id="avg">予測リーチ確率：14.29%<br>（基本14.29% + 加護0.00%）<br><br>予測WIN確率：2.04%<br>（リーチ14.29% × Lucky0%）<br><br>プレイ回数：0<br>リーチ回数：0 (0%)<br>WIN回数：0 (0%)</p>
+
+<hr>
+
+<h2>シーズン</h2>
+
+<p>現在：<span id="seasonCount">0</span>/100</p>
+
+<p>シーズンWIN：<span id="seasonWin">0</span></p>
+
+<p>ベスト：<span id="bestSeasonWin">0</span></p>
+
+<hr>
+
+<h2>スキルポイント</h2>
+
+<p>SP：<span id="skillPoint">0</span></p>
+
+</div>
+
+<div class="result">
+
+<h2>ショップ</h2>
+
+<button onclick="buyAuto()" id="autoBtn">
+自動停止解放(10SP)
+</button>
+
+<br><br>
+
+<button onclick="buySpeed()" disabled="disabled" id="speedBtn">
+速度UP
+(<span id="speedCost">1</span>SP)
+</button>
+
+<br><br>
+
+<button onclick="buyLucky()" id="luckyBtn">
+LuckyParrot(5SP)
+</button>
+
+<hr>
+
+<p>
+自動停止：
+<span id="autoState">未購入</span>
+</p>
+
+<p>
+速度Lv：
+<span id="speedLevel">0</span>
+</p>
+
+<p>
+LuckyLv：
+<span id="luckyLevel">0</span>
+</p>
+
+</div>
+
+<div class="result">
+
+<h2>図鑑</h2>
+
+<p>
+収集率：
+<span id="collectionRate">0/7</span>
+</p>
+
+<ul id="collectionList"><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li></ul>
+
+<hr>
+
+<h2>実績</h2>
+
+<ul id="achievementList"><li class="locked">✖ 初WIN</li><li class="locked">✖ 10WIN達成</li><li class="locked">✖ 100WIN達成</li><li class="locked">✖ 50リーチ</li><li class="locked">✖ 100リーチ</li><li class="locked">✖ 自動モード解放</li><li class="locked">✖ 図鑑コンプ</li></ul>
+
+<hr>
+
+<h2>通知</h2>
+
+<div id="logBox">[20:34:12] セーブデータ読込完了<br>
+ゲーム開始！
+</div>
+
+<br>
+
 <input type="button" value="データリセット" onclick="resetData()">
+
+</div>
+<div id="reachText">
+
+リーチ！！
+
 </div>
 </div>
 
+<div id="howtoModal" class="modal">
 
-                <script>let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
+    <div class="modal-content">
+
+        <span class="close" onclick="closeHowTo()">
+        ×
+        </span>
+
+        <h2><img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" style="width:20px;">How To Play</h2>
+
+        <p>① レバーを引く</p>
+        <p>② ボタンで停止</p>
+        <p>③ 3つ揃えてWIN！</p>
+
+        <hr>
+
+        <h3>スキルポイント</h3>
+
+        <ul>
+            <li>シーズン報酬</li>
+            <li>実績報酬</li>
+            <li>図鑑コンプ報酬</li>
+        </ul>
+
+        <hr>
+
+        <h3>図鑑ボーナス</h3>
+
+        <p>
+        1種 WIN → リーチ率+1%
+        </p>
+
+        <p>
+        3種 WIN → リーチ率+2%
+        </p>
+
+        <p>
+        7種 WIN → リーチ率+4%
+        </p>
+
+    </div>
+
+</div>
+
+
+
+                <script>const SAVE_VERSION = 260611;
+
+let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/parrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/ultrafastparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/boredparrot.gif',
@@ -203,13 +567,107 @@ body{
 let slot1 = 0;
 let slot2 = 0;
 let slot3 = 0;
+
+let reachMode = false;
+// ===== RPGデータ =====
+
+let skillPoint = 0;
+
+let seasonCount = 0;
+let seasonWin = 0;
+let bestSeasonWin = 0;
+
+let autoUnlock = false;
+let speedLevel = 0;
+let luckyLevel = 0;
+
+let collection = [];
+let achievements = [];
+
+const parrotNames = [
+    "Party Parrot",
+    "Parrot",
+    "Ultra Fast Parrot",
+    "Bored Parrot",
+    "GitHub Parrot",
+    "Cockatiel",
+    "Party Cat"
+];
+
+let winCollection = [];
+
+const achievementData = [
+
+{
+    id:"first_win",
+    name:"初WIN",
+    reward:1
+},
+
+{
+    id:"win10",
+    name:"10WIN達成",
+    reward:3
+},
+
+{
+    id:"win100",
+    name:"100WIN達成",
+    reward:10
+},
+
+{
+    id:"reach50",
+    name:"50リーチ",
+    reward:3
+},
+
+{
+    id:"reach100",
+    name:"100リーチ",
+    reward:5
+},
+
+{
+    id:"auto_unlock",
+    name:"自動モード解放",
+    reward:2
+},
+
+{
+    id:"collection_complete",
+    name:"図鑑コンプ",
+    reward:10
+}
+
+];
+
+
 let t_count = 0;
 let r_count = 0;
 let w_count = 0;
-let wavg = img.length/(img.length**3);
-wavg = Math.round(wavg * 100*100) / 100;
-let ravg = img.length/(img.length**2);
-ravg = Math.round(ravg * 100*100) /100;
+
+let ravg =
+100 / img.length +
+getReachBonus() * 100;
+
+let baseWin =
+100 / (img.length * img.length);
+
+let luckyRate =
+luckyLevel * 0.05;
+
+// リーチ後に当たる追加確率
+let bonusWin =
+ravg *
+(
+1 -
+(1 - luckyRate)
+);
+
+let wavg =
+baseWin +
+bonusWin;
 
 function start(){
     loadData();
@@ -237,6 +695,10 @@ function start(){
     bar.style.animation = 'none';
 });
     updateCount();
+    updateRPGUI();
+    updateAchievementUI();
+    updateCollectionUI();
+    addLog("セーブデータ読込完了");
 }
 
 
@@ -245,6 +707,7 @@ function button1(){
     document.getElementById('btn2').disabled = false;
 document.querySelectorAll('.slide1').forEach(function(slide) {
     slot1 = Math.floor(Math.random() * img.length);
+    addCollection(slot1);
     slide.src = img[slot1];
     slide.style.animation = 'none';
     slide.style.transform = 'translateY(-106%)';
@@ -261,33 +724,117 @@ function button2(){
     document.getElementById('btn3').disabled = false;
 document.querySelectorAll('.slide2').forEach(function(slide) {
     slot2 = Math.floor(Math.random() * img.length);
+    addCollection(slot2);
     slide.src = img[slot2];
     slide.style.animation = 'none';
     slide.style.transform = 'translateY(-106%)';
 });
-
 if(slot1==slot2){
-    if(autoMode == true){
-    document.getElementById("autobtn").click();
-    }
-  const overlay = document.getElementById('flash-overlay');
-  overlay.className = '';
-  setTimeout(() => {
-    overlay.className = 'flash-active';
-  }, 10);
-    alert("リーチ!!");
+
+    reachMode = true;
     r_count++;
+
     saveData();
     updateCount();
-    document.body.style.backgroundImage = "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";    
+
+    showReach();
+
+    document.body.style.backgroundImage =
+    "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";
+if(autoMode){
+
+    autoMode = false;
+
+    clearInterval(timer);
+
+    clearTimeout(timeout1);
+    clearTimeout(timeout2);
+    clearTimeout(timeout3);
+
+    document.getElementById("autobtn").value =
+    "自動モードON";
+
+    document.getElementById("btn3").disabled = false;
+
+    addLog(
+    "リーチ！最後は自分で止めろ！"
+    );
+}
+}
 }
 
+
+function showReach(){
+
+    const reach =
+    document.getElementById(
+    "reachText"
+    );
+
+    reach.classList.remove(
+    "reach-show"
+    );
+
+    void reach.offsetWidth;
+
+    reach.classList.add(
+    "reach-show"
+    );
+
+    const overlay =
+    document.getElementById(
+    "flash-overlay"
+    );
+
+    overlay.className='';
+
+    setTimeout(()=>{
+        overlay.className=
+        'flash-active';
+    },10);
 }
+
 function button3(){
     document.getElementById('btn3').disabled = true;
     document.getElementById('rbtn').disabled = false;
 document.querySelectorAll('.slide3').forEach(function(slide) {
     slot3 = Math.floor(Math.random() * img.length);
+    addCollection(slot3);
+
+if(
+slot1 == slot2 &&
+luckyLevel > 0
+){
+
+    let chance =
+    luckyLevel * 0.05;
+
+    if(Math.random() < chance){
+
+        slot3 = slot1;
+
+        addLog(
+        "Lucky発動！"
+        );
+        const overlay =
+document.getElementById(
+'flash-overlay'
+);
+
+overlay.className='';
+
+setTimeout(
+()=>{
+overlay.className=
+'flash-active';
+},
+10
+);
+
+document.body.style.backgroundImage =
+"url('https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif')";
+    }
+}
     slide.src = img[slot3];
     slide.style.animation = 'none';
     slide.style.transform = 'translateY(-106%)';
@@ -300,18 +847,28 @@ if(slot1==slot2 && slot2==slot3){
   }, 10);
     alert("勝利はあなたの手に...");
     w_count++;
+    seasonWin++;
+    addWinCollection(slot1);
+    checkAchievements();
     saveData();
     updateCount();
     document.body.style.backgroundImage = "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')"; 
-}else{
+    
+}
+else{
         document.body.style.backgroundImage = "none";
     }
+    reachMode = false;
 }
-
 function rebutton(){
+
     t_count++;
+    seasonCount++;
+
+    seasonCheck();
     saveData();
     updateCount();
+     updateRPGUI();
     document.body.style.backgroundImage = "none";
     document.querySelectorAll('.circle').forEach(function(circle){
     circle.style.animation = 'circle 1 0.3s alternate';
@@ -335,16 +892,63 @@ document.querySelectorAll('.slide3').forEach(function(slide) {
 });
     document.getElementById('btn1').disabled = false;
 }
-
-
 function updateCount(){
-document.getElementById('avg').innerHTML = 
-"予測WIN確率："+wavg+"% / "
-+"予測リーチ確率："+ ravg +"%"
+
+    let luckyRate =
+    luckyLevel * 0.05;
+
+    let ravg =
+    100 / img.length;
+
+    let baseWin =
+    100 / (img.length * img.length);
+
+    let bonusWin =
+    ravg * luckyRate;
+
+    let wavg =
+    baseWin + bonusWin;
+
+    let rrate = 0;
+    let wrate = 0;
+
+    if(t_count > 0){
+
+        rrate =
+        Math.round(
+            r_count / t_count * 10000
+        ) / 100;
+
+        wrate =
+        Math.round(
+            w_count / t_count * 10000
+        ) / 100;
+    }
+document.getElementById('avg').innerHTML =
+
+"予測リーチ確率："+ravg.toFixed(2)+"%<br>"
++
+"（基本14.29% + 加護"+(getReachBonus()*100).toFixed(2)+"%）"
++
+"<br><br>"
+
++"予測WIN確率："+wavg.toFixed(2)+"%"
++
+"<br>"
++
+"（リーチ"+ravg.toFixed(2)+"% × Lucky"
++(luckyLevel*3)
++"%）"
+
 +"<br><br>"
+
 +"プレイ回数："+t_count+"<br>"
-+"リーチの回数："+r_count+" ("+Math.round(r_count/t_count*100*100)/100+"%)"+"<br>"
-+"WIN回数："+w_count+" ("+Math.round(w_count/t_count*100*100)/100+"%)";
++"リーチ回数："+r_count
++" ("+rrate+"%)<br>"
++"WIN回数："+w_count
++" ("+wrate+"%)";
+
+"加護："+winCollection.length+"/7"
 }
 
 
@@ -353,81 +957,685 @@ var timer;
 var timeout1;
 var timeout2;
 var timeout3;
-
+let autoLoopTimer;
 function toggleAuto() {
+if (autoMode == false) {
 
-    if (autoMode == false) {
+    autoMode = true;
 
-        autoMode = true;
+    startAutoLoop();
 
-        timer = setInterval(function() {
+    document.getElementById("autobtn").value =
+    "自動モードOFF";
 
-            document.getElementById("rbtn").click();
+} else {
 
-            timeout1 = setTimeout(function() {
-                if (autoMode) {
-                    document.getElementById("btn1").click();
-                }
-            }, 500);
+    autoMode = false;
 
-            timeout2 = setTimeout(function() {
-                if (autoMode) {
-                    document.getElementById("btn2").click();
-                }
-            }, 1000);
+    clearTimeout(autoLoopTimer);
 
-            timeout3 = setTimeout(function() {
-                if (autoMode) {
-                    document.getElementById("btn3").click();
-                }
-            }, 1500);
-
-        }, 1000);
-
-        document.getElementById("autobtn").value = "自動モードOFF";
-
-    } else {
-
-        autoMode = false;
-
-        clearInterval(timer);
-
-        clearTimeout(timeout1);
-        clearTimeout(timeout2);
-        clearTimeout(timeout3);
-
-        document.getElementById("autobtn").value = "自動モードON";
-    }
+    document.getElementById("autobtn").value =
+    "自動モードON";
+}
 }
 
-// 保存
-function saveData() {
-    localStorage.setItem("slotData", JSON.stringify({
-        play: t_count,
-        reach: r_count,
-        win: w_count
-    }));
+function startAutoLoop(){
+
+    if(!autoMode){
+        return;
+    }
+
+    let speed = getAutoSpeed();
+
+    document.getElementById("rbtn").click();
+
+    setTimeout(function(){
+
+        if(!autoMode) return;
+
+        document.getElementById("btn1").click();
+
+        setTimeout(function(){
+
+            if(!autoMode) return;
+
+            document.getElementById("btn2").click();
+
+            // リーチしたらここで終了
+            if(reachMode){
+                return;
+            }
+
+            setTimeout(function(){
+
+                if(!autoMode) return;
+
+                document.getElementById("btn3").click();
+
+                // 次周回
+                autoLoopTimer =
+                setTimeout(
+                    startAutoLoop,
+                    speed * 0.25
+                );
+
+            }, speed * 0.25);
+
+        }, speed * 0.25);
+
+    }, speed * 0.25);
+}
+
+function getAutoSpeed(){
+
+    let speed =
+    5000 -
+    speedLevel * 350;
+
+    if(speed < 500){
+        speed = 500;
+    }
+
+    return speed;
+}
+
+function saveData(){
+
+    localStorage.setItem(
+        "slotData",
+        JSON.stringify({
+
+            version: SAVE_VERSION,
+
+            play:t_count,
+            reach:r_count,
+            win:w_count,
+
+            skillPoint:skillPoint,
+
+            seasonCount:seasonCount,
+            seasonWin:seasonWin,
+            bestSeasonWin:bestSeasonWin,
+
+            autoUnlock:autoUnlock,
+            speedLevel:speedLevel,
+            luckyLevel:luckyLevel,
+
+            collection:collection,
+            winCollection:winCollection,
+            achievements:achievements
+        })
+    );
 }
 
 // 読み込み
-function loadData() {
-    const data = JSON.parse(localStorage.getItem("slotData"));
+function loadData(){
 
-    if (data) {
-        t_count = data.play || 0;
-        r_count = data.reach || 0;
-        w_count = data.win || 0;
+    const data =
+    JSON.parse(
+        localStorage.getItem("slotData")
+    );
+
+    if(!data){
+        return;
     }
+
+    // バージョン違いなら強制初期化
+    if(data.version !== SAVE_VERSION){
+
+        localStorage.removeItem(
+            "slotData"
+        );
+
+        alert(
+            "大型アップデートのため\nセーブデータを初期化しました"
+        );
+
+        return;
+    }
+
+    t_count = data.play || 0;
+    r_count = data.reach || 0;
+    w_count = data.win || 0;
+
+    skillPoint = data.skillPoint || 0;
+
+    seasonCount =
+    data.seasonCount || 0;
+
+    seasonWin =
+    data.seasonWin || 0;
+
+    bestSeasonWin =
+    data.bestSeasonWin || 0;
+
+    autoUnlock =
+    data.autoUnlock || false;
+
+    speedLevel =
+    data.speedLevel || 0;
+
+    luckyLevel =
+    data.luckyLevel || 0;
+
+    collection =
+    data.collection || [];
+
+    achievements =
+    data.achievements || [];
+
+    winCollection =
+    data.winCollection || [];
 }
 
 function resetData(){
+
+    if(
+        !confirm(
+            "本当に全データを削除しますか？"
+        )
+    ){
+        return;
+    }
+
     localStorage.removeItem("slotData");
 
     t_count = 0;
     r_count = 0;
     w_count = 0;
 
+    skillPoint = 0;
+
+    seasonCount = 0;
+    seasonWin = 0;
+    bestSeasonWin = 0;
+
+    autoUnlock = false;
+    speedLevel = 0;
+    luckyLevel = 0;
+
+    collection = [];
+    achievements = [];
+
     updateCount();
+    updateRPGUI();
+
+    addLog("データをリセットしました");
+    window.location.reload();
+}
+
+function spendSP(cost){
+
+    if(skillPoint < cost){
+
+        addLog(
+            "SP不足 ("+
+            cost+
+            "SP必要)"
+        );
+
+        return false;
+    }
+
+    skillPoint -= cost;
+
+    saveData();
+    updateRPGUI();
+
+    return true;
+}
+
+function buyAuto(){
+
+    if(autoUnlock){
+
+        addLog(
+            "自動停止は購入済です"
+        );
+
+        return;
+    }
+
+    if(!spendSP(10)){
+        return;
+    }
+
+    autoUnlock = true;
+
+    addLog(
+"自動モード解放！"
+);
+
+    updateRPGUI();
+    saveData();
+
+}
+
+function buySpeed(){
+if(speedLevel >= 10){
+
+    addLog(
+    "速度Lv最大"
+    );
+
+    return;
+}
+    let cost =
+    (speedLevel + 1) ** 2;
+
+    if(!spendSP(cost)){
+        return;
+    }
+
+    speedLevel++;
+
+    addLog(
+        "速度Lv"+
+        speedLevel+
+        "になった"
+    );
+
+    updateRPGUI();
+    updateCount();
+    saveData();
+}
+
+function buyLucky(){
+if(luckyLevel >= 10){
+
+    addLog(
+    "Lucky最大"
+    );
+
+    return;
+}
+    if(!spendSP(5)){
+        return;
+    }
+
+    luckyLevel++;
+
+    addLog(
+        "Lucky Lv"+
+        luckyLevel+
+        "になった"
+    );
+
+    updateRPGUI();
+    updateCount();
+    saveData();
+}
+
+function addLog(message){
+
+    const box =
+    document.getElementById("logBox");
+
+    if(!box) return;
+
+    box.innerHTML =
+    "["+
+    new Date().toLocaleTimeString()
+    +"] "
+    +message+
+    "<br>"
+    +box.innerHTML;
+}
+function updateRPGUI(){
+
+    document.getElementById("skillPoint").textContent =
+    skillPoint;
+
+    document.getElementById("seasonCount").textContent =
+    seasonCount;
+
+    document.getElementById("seasonWin").textContent =
+    seasonWin;
+
+    document.getElementById("bestSeasonWin").textContent =
+    bestSeasonWin;
+
+    document.getElementById("speedLevel").textContent =
+    speedLevel;
+
+    document.getElementById("luckyLevel").textContent =
+    luckyLevel;
+
+    document.getElementById("autoState").textContent =
+    autoUnlock ? "購入済" : "未購入";
+    document.getElementById(
+"autobtn"
+).style.display =
+autoUnlock
+? "inline-block"
+: "none";
+
+    document.getElementById("speedCost").textContent =
+    (speedLevel + 1) ** 2;
+
+    document.getElementById("collectionRate").textContent =
+    collection.length + "/7";
+
+let autoBtn =
+document.getElementById("autoBtn");
+
+let speedBtn =
+document.getElementById("speedBtn");
+
+let luckyBtn =
+document.getElementById("luckyBtn");
+
+
+if(
+autoBtn &&
+autoUnlock
+){
+
+    autoBtn.disabled =
+    true;
+
+    speedBtn.disabled = false;
+    autoBtn.textContent =
+    "購入済";
+}
+
+if(speedBtn && speedLevel >= 5){
+    speedBtn.disabled = true;
+    speedBtn.innerHTML = "速度UP(MAX)<span id='speedCost'></span>";
+}
+
+
+if(luckyBtn && luckyLevel >= 10){
+    luckyBtn.disabled = true;
+    luckyBtn.innerHTML = "LuckyParrot(MAX)";
+}
+}
+
+function seasonCheck(){
+
+    if(seasonCount < 100){
+        return;
+    }
+
+    let reward =
+    5 + seasonWin*2;
+
+    skillPoint += reward;
+
+    if(seasonWin > bestSeasonWin){
+        bestSeasonWin = seasonWin;
+    }
+
+    addLog(
+        "シーズン終了！ WIN:("
+        + seasonWin
+        + " SP×2)+"
+        + reward
+    );
+
+    alert(
+        "シーズン終了！\n\n"
+        +"WIN:"+seasonWin+"\n"
+        +"獲得SP:"+reward
+    );
+
+    seasonCount = 0;
+    seasonWin = 0;
+
+    updateRPGUI();
+    saveData();
+}
+
+function unlockAchievement(id){
+
+    if(
+    achievements.includes(id)
+    ){
+        return;
+    }
+
+    achievements.push(id);
+
+    let ach =
+    achievementData.find(
+    a => a.id == id
+    );
+
+    if(!ach){
+        return;
+    }
+
+    skillPoint += ach.reward;
+
+    addLog(
+    "実績解除！ "
+    + ach.name
+    + " SP+"
+    + ach.reward
+    );
+
+    updateAchievementUI();
+
+     updateRPGUI();
+    saveData();
+}
+
+function checkAchievements(){
+
+    if(w_count >= 1){
+        unlockAchievement(
+        "first_win"
+        );
+    }
+
+    if(w_count >= 10){
+        unlockAchievement(
+        "win10"
+        );
+    }
+
+    if(w_count >= 100){
+        unlockAchievement(
+        "win100"
+        );
+    }
+
+    if(r_count >= 50){
+        unlockAchievement(
+        "reach50"
+        );
+    }
+
+    if(r_count >= 100){
+        unlockAchievement(
+        "reach100"
+        );
+    }
+
+    if(autoUnlock){
+        unlockAchievement(
+        "auto_unlock"
+        );
+    }
+
+    if(collection.length >= 7){
+        unlockAchievement(
+        "collection_complete"
+        );
+    }
+}
+
+function updateAchievementUI(){
+
+    const list =
+    document.getElementById(
+    "achievementList"
+    );
+
+    if(!list){
+        return;
+    }
+
+    list.innerHTML = "";
+
+    achievementData.forEach(
+    function(a){
+
+        let li =
+        document.createElement(
+        "li"
+        );
+
+        if(
+        achievements.includes(a.id)
+        ){
+
+            li.className =
+            "unlocked";
+
+            li.textContent =
+            "✔ "
+            + a.name;
+
+        }else{
+
+            li.className =
+            "locked";
+
+            li.textContent =
+            "✖ "
+            + a.name;
+        }
+
+        list.appendChild(li);
+
+    });
+}
+
+function addCollection(index){
+
+    if(
+    collection.includes(index)
+    ){
+        return;
+    }
+
+    collection.push(index);
+
+    addLog(
+    "NEW! "
+    + parrotNames[index]
+    );
+
+    updateCollectionUI();
+
+    checkAchievements();
+
+    saveData();
+}
+
+function updateCollectionUI(){
+
+    const list =
+    document.getElementById(
+    "collectionList"
+    );
+
+    if(!list){
+        return;
+    }
+
+    list.innerHTML = "";
+
+    for(
+    let i=0;
+    i<parrotNames.length;
+    i++
+    ){
+
+        let li =
+        document.createElement(
+        "li"
+        );
+
+        if(
+        collection.includes(i)
+        ){
+
+            li.className =
+            "unlocked";
+
+            li.innerHTML = parrotNames[i];
+            if(
+winCollection.includes(i)
+){
+
+    li.classList.add(
+    "blessing"
+    );
+}
+
+        }else{
+
+            li.className =
+            "locked";
+
+            li.textContent =
+            "？？？？？";
+        }
+
+        list.appendChild(li);
+    }
+}
+
+function addWinCollection(index){
+
+    if(
+    winCollection.includes(index)
+    ){
+        return;
+    }
+
+    winCollection.push(index);
+
+    addLog(
+    parrotNames[index]
+    + "の加護を獲得！"
+    );
+    updateCollectionUI(); 
+    updateCount();
+    saveData();
+}
+
+function getReachBonus(){
+
+    if(winCollection.length >= 7){
+        return 0.07;
+    }
+
+    if(winCollection.length >= 3){
+        return 0.03;
+    }
+
+    if(winCollection.length >= 1){
+        return 0.01;
+    }
+
+    return 0;
+}
+
+function openHowTo(){
+
+    document.getElementById(
+    "howtoModal"
+    ).style.display = "block";
+}
+
+function closeHowTo(){
+
+    document.getElementById(
+    "howtoModal"
+    ).style.display = "none";
 }</script>
             
         
