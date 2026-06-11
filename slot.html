@@ -491,7 +491,7 @@ LuckyLv：
 
 <h2>通知</h2>
 
-<div id="logBox">[20:34:12] セーブデータ読込完了<br>
+<div id="logBox">[20:44:35] セーブデータ読込完了<br>
 ゲーム開始！
 </div>
 
@@ -526,6 +526,8 @@ LuckyLv：
         <h3>スキルポイント</h3>
 
         <ul>
+            <li>リーチ：+1</li>
+            <li>WIN：+3</li>
             <li>シーズン報酬</li>
             <li>実績報酬</li>
             <li>図鑑コンプ報酬</li>
@@ -738,7 +740,7 @@ if(slot1==slot2){
     updateCount();
 
     showReach();
-
+    skillPoint++;
     document.body.style.backgroundImage =
     "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";
 if(autoMode){
@@ -848,6 +850,7 @@ if(slot1==slot2 && slot2==slot3){
     alert("勝利はあなたの手に...");
     w_count++;
     seasonWin++;
+    skillPoint+=3;
     addWinCollection(slot1);
     checkAchievements();
     saveData();
