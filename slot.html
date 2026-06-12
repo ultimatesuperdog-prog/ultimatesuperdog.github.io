@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html>
-<head>
-                <style>.parent{display: flex;
+
+<head><style>.parent{display: flex;
     justify-content: center;
     height: 100vh; 
     align-items: center;
@@ -13,6 +14,7 @@
     background-color: rgba(255, 255, 255, 0.8);
     padding: 15px;    
     border-radius: 15px;
+    
 }
 @keyframes slide_ani{
     from{transform: translateY(-101%);}
@@ -187,7 +189,7 @@ color:gray;
 }
 
 .unlocked{
-color:limegreen;
+color:rgb(63, 147, 39);
 font-weight:bold;
 }
 
@@ -302,19 +304,19 @@ animation:
 rainbow 1s linear infinite;
 
 text-shadow:
-0 0 5px white,
-0 0 10px yellow;
+0 0 10px rgb(0, 0, 0),
+0 0 50px rgb(0, 0, 0);
 }
 
 @keyframes rainbow{
 
-0%{color:red;}
-16%{color:orange;}
-33%{color:yellow;}
-50%{color:lime;}
-66%{color:cyan;}
-83%{color:blue;}
-100%{color:violet;}
+0%{color:#f55;}
+16%{color:#ff5;}
+33%{color:#5f5;}
+50%{color:#5ff;}
+66%{color:#55f;}
+83%{color:#f5f;}
+100%{color:#f55;}
 
 }
 
@@ -362,55 +364,161 @@ text-shadow:
     font-size:30px;
 
     cursor:pointer;
+}
+
+.rarity-C{
+border-color:#888 !important;
+}
+
+.rarity-R{
+border-color:#3aa0ff !important;
+}
+
+.rarity-E{
+border-color:#b040ff !important;
+}
+
+.rarity-L{
+border-color:#ffd700 !important;
+}
+
+.rarity-M{
+border-color:#ff4040 !important;
+
+box-shadow:
+0 0 10px red,
+0 0 20px red;
+}
+
+.rarity-S{
+
+animation:
+rainbowBorder 1s linear infinite;
+
+box-shadow:
+0 0 20px white,
+0 0 40px white,
+0 0 80px white;
+}
+
+@keyframes rainbowBorder{
+
+0%{
+border-color:#ff0000;
+}
+
+20%{
+border-color:#ffff00;
+}
+
+40%{
+border-color:#00ff00;
+}
+
+60%{
+border-color:#00ffff;
+}
+
+80%{
+border-color:#0000ff;
+}
+
+100%{
+border-color:#ff00ff;
+}
+
+}
+
+.rarity-lock{
+    color:#666;
+}
+
+.rarity-found{
+    color:#ce0000;
+    font-weight:bold;
+}
+
+.rarity-blessing{
+
+    animation:
+    rainbowText
+    1s linear infinite;
+
+    font-weight:bold;
+}
+
+@keyframes rainbowText{
+
+0%{color:red;}
+20%{color:yellow;}
+40%{color:lime;}
+60%{color:cyan;}
+80%{color:blue;}
+100%{color:magenta;}
+
 }</style>
-            </head>
-            <body onload="start()">
-                
-
-
-
     <meta charset="UTF-8">
     <title>party or die</title>
+</head>
 
-
-
+<body onload="start()">
 
 <div id="flash-overlay" class="flash-off"></div>
-<input type="button" value="How To Play" onclick="openHowTo()">
+<input type="button"
+value="How To Play"
+onclick="openHowTo()">
+<input
+type="button"
+id="effectBtn"
+value="演出：ON"
+onclick="toggleEffect()">
 <div class="parent">
     <div class="lever">
-        <input type="button" class="circle" onclick="rebutton()" id="rbtn" style="animation: auto ease 0s 1 normal none running none;">
-        <div class="bar" style="animation: auto ease 0s 1 normal none running none;">
+        <input type="button" class="circle"onclick="rebutton()" id="rbtn">
+        <div  class="bar">
         </div>
     </div>
     <div>
 <div class="slot">
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide1">
     </div>
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide2">
     </div>
     <div>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);"><br>
-        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3" style="animation: auto ease 0s 1 normal none running none; transform: translateY(0%);">
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3"><br>
+        <img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" class="slide3">
     </div>
 </div>
 <div class="button_div">
-    <input type="button" id="btn1" onclick="button1()" disabled="">
-    <input type="button" id="btn2" onclick="button2()" disabled="">
-    <input type="button" id="btn3" onclick="button3()" disabled="">
+    <input type="button" id="btn1" onclick="button1()">
+    <input type="button" id="btn2" onclick="button2()">
+    <input type="button" id="btn3" onclick="button3()">
 </div>
 <div style="text-align:center">
-<input type="button" value="自動モードON" onclick="toggleAuto()" id="autobtn" class="bb" style="display:none">
+<input
+type="button"
+value="自動モードON"
+onclick="toggleAuto()"
+id="autobtn"
+class="bb"
+style="display:none">
+
+<input
+type="button"
+id="extendBtn"
+value="⚡ Exceed!!"
+style="display:none;">
+
 </div>
 </div>
 <div class="result">
 <h2>統計</h2>
 
-<p id="avg">予測リーチ確率：14.29%<br>（基本14.29% + 加護0.00%）<br><br>予測WIN確率：2.04%<br>（リーチ14.29% × Lucky0%）<br><br>プレイ回数：0<br>リーチ回数：0 (0%)<br>WIN回数：0 (0%)</p>
+<p id="avg"></p>
 
 <hr>
 
@@ -427,6 +535,37 @@ text-shadow:
 <h2>スキルポイント</h2>
 
 <p>SP：<span id="skillPoint">0</span></p>
+
+
+<div id="bankArea" style="display:none">
+
+<hr>
+
+<h2>貯金箱</h2>
+
+<p>
+預金：
+<span id="bankSPText">0</span>
+SP
+</p>
+
+<p>
+倍率：
+<span id="bankRate">0</span>
+</p>
+
+<p>
+予想受取：
+<span id="bankResult">0</span>
+SP
+</p>
+
+<input
+type="button"
+value="引き出す"
+onclick="withdrawBank()">
+
+</div>
 
 </div>
 
@@ -451,6 +590,41 @@ text-shadow:
 LuckyParrot(5SP)
 </button>
 
+<br><br>
+
+<button
+id="bankBtn"
+onclick="buyBank()">
+
+貯金箱
+(250SP)
+
+</button>
+
+<br><br>
+
+<button
+id="noReachBtn"
+style="display:none"
+onclick="buyNoReachStop()">
+
+リーチ停止無効化
+(500SP)
+
+</button>
+
+<br>
+
+<button
+id="exceedBuyBtn"
+style="display:none"
+onclick="buyExceed()">
+
+⚡ Exceed!!
+(2500SP)
+
+</button>
+
 <hr>
 
 <p>
@@ -468,9 +642,7 @@ LuckyLv：
 <span id="luckyLevel">0</span>
 </p>
 
-</div>
-
-<div class="result">
+<hr>
 
 <h2>図鑑</h2>
 
@@ -479,25 +651,34 @@ LuckyLv：
 <span id="collectionRate">0/7</span>
 </p>
 
-<ul id="collectionList"><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li><li class="locked">？？？？？</li></ul>
+<ul id="collectionList">
+</ul>
 
-<hr>
+<p>Common→Rare→Epic→Legend→Mythic</p>
+
+</div>
+
+<div class="result">
 
 <h2>実績</h2>
 
-<ul id="achievementList"><li class="locked">✖ 初WIN</li><li class="locked">✖ 10WIN達成</li><li class="locked">✖ 100WIN達成</li><li class="locked">✖ 50リーチ</li><li class="locked">✖ 100リーチ</li><li class="locked">✖ 自動モード解放</li><li class="locked">✖ 図鑑コンプ</li></ul>
+<ul id="achievementList">
+</ul>
 
 <hr>
 
 <h2>通知</h2>
 
-<div id="logBox">[20:44:35] セーブデータ読込完了<br>
+<div id="logBox">
 ゲーム開始！
 </div>
 
 <br>
 
-<input type="button" value="データリセット" onclick="resetData()">
+<input
+type="button"
+value="データリセット"
+onclick="resetData()">
 
 </div>
 <div id="reachText">
@@ -511,7 +692,8 @@ LuckyLv：
 
     <div class="modal-content">
 
-        <span class="close" onclick="closeHowTo()">
+        <span class="close"
+        onclick="closeHowTo()">
         ×
         </span>
 
@@ -553,9 +735,8 @@ LuckyLv：
 
 </div>
 
-
-
-                <script>const SAVE_VERSION = 260611;
+</body>
+</html><script>const SAVE_VERSION = 260613;
 
 let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/parrot.gif',
@@ -570,10 +751,14 @@ let slot1 = 0;
 let slot2 = 0;
 let slot3 = 0;
 
+let rarity1 = "C";
+let rarity2 = "C";
+let rarity3 = "C";
+
 let reachMode = false;
 // ===== RPGデータ =====
 
-let skillPoint = 0;
+let skillPoint = 5000;
 
 let seasonCount = 0;
 let seasonWin = 0;
@@ -582,9 +767,22 @@ let bestSeasonWin = 0;
 let autoUnlock = false;
 let speedLevel = 0;
 let luckyLevel = 0;
+let noReachStop = false;
 
-let collection = [];
+let collection = {};
+let winCollection = {};
 let achievements = [];
+let secretUnlocked = false;
+let bankUnlock = false;
+let bankSP = 0;
+
+let exceedUnlock = false;
+let exceedMode = false;
+let exceedTimer = null;
+
+let effectMode = true;
+
+let speciesCount = Object.keys(collection).length;
 
 const parrotNames = [
     "Party Parrot",
@@ -596,7 +794,40 @@ const parrotNames = [
     "Party Cat"
 ];
 
-let winCollection = [];
+const rarityData = [
+    { id:"C", rate:65, bonus:0.001 },
+    { id:"R", rate:20, bonus:0.003 },
+    { id:"E", rate:10, bonus:0.007 },
+    { id:"L", rate:4,  bonus:0.015 },
+    { id:"M", rate:0.9, bonus:0.04 },
+    { id:"S", rate:0.1, bonus:0.06 }
+];
+
+function getRandomRarity(){
+
+    let rand =
+    Math.random() * 100;
+
+    let total = 0;
+
+    for(let rarity of rarityData){
+
+        total += rarity.rate;
+
+        if(rand < total){
+            return rarity.id;
+        }
+    }
+
+    return "C";
+}
+function getParrotText(index, rarity){
+
+    return parrotNames[index]
+    + " ["
+    + rarity
+    + "]";
+}
 
 const achievementData = [
 
@@ -696,77 +927,165 @@ function start(){
     document.querySelectorAll('.bar').forEach(function(bar){
     bar.style.animation = 'none';
 });
+const exceedBtn =
+document.getElementById(
+"extendBtn"
+);
+
+exceedBtn.addEventListener(
+"mousedown",
+startExceed
+);
+
+exceedBtn.addEventListener(
+"mouseup",
+stopExceed
+);
+
+exceedBtn.addEventListener(
+"mouseleave",
+stopExceed
+);
+
+document.getElementById(
+"effectBtn"
+).value =
+effectMode
+? "演出：ON"
+: "演出：控えめ";
+
     updateCount();
     updateRPGUI();
     updateAchievementUI();
     updateCollectionUI();
+    updateBankUI();
     addLog("セーブデータ読込完了");
 }
 
-
 function button1(){
+
     document.getElementById('btn1').disabled = true;
     document.getElementById('btn2').disabled = false;
-document.querySelectorAll('.slide1').forEach(function(slide) {
+
+    // ← 抽選は1回だけ
     slot1 = Math.floor(Math.random() * img.length);
-    addCollection(slot1);
-    slide.src = img[slot1];
-    slide.style.animation = 'none';
-    slide.style.transform = 'translateY(-106%)';
+    rarity1 = getRandomRarity();
+
+    addCollection(slot1, rarity1);
+
+    document.querySelectorAll('.slide1').forEach(function(slide){
+
+        slide.classList.remove(
+            "rarity-C",
+            "rarity-R",
+            "rarity-E",
+            "rarity-L",
+            "rarity-M",
+            "rarity-S"
+        );
+
+        slide.classList.add(
+            "rarity-" + rarity1
+        );
+
+        slide.src = img[slot1];
+        slide.style.animation = 'none';
+        slide.style.transform = 'translateY(-106%)';
+    });
+
     document.querySelectorAll('.circle').forEach(function(circle){
-    circle.style.animation = 'none';
-});
+        circle.style.animation = 'none';
+    });
+
     document.querySelectorAll('.bar').forEach(function(bar){
-    bar.style.animation = 'none';
-});
-});
+        bar.style.animation = 'none';
+    });
 }
+
 function button2(){
+
     document.getElementById('btn2').disabled = true;
     document.getElementById('btn3').disabled = false;
-document.querySelectorAll('.slide2').forEach(function(slide) {
+
+    // 抽選は1回だけ
     slot2 = Math.floor(Math.random() * img.length);
-    addCollection(slot2);
-    slide.src = img[slot2];
-    slide.style.animation = 'none';
-    slide.style.transform = 'translateY(-106%)';
-});
-if(slot1==slot2){
+    rarity2 = getRandomRarity();
 
-    reachMode = true;
-    r_count++;
+    addCollection(slot2, rarity2);
 
-    saveData();
-    updateCount();
+    document.querySelectorAll('.slide2').forEach(function(slide){
 
-    showReach();
-    skillPoint++;
+        slide.classList.remove(
+            "rarity-C",
+            "rarity-R",
+            "rarity-E",
+            "rarity-L",
+            "rarity-M",
+            "rarity-S"
+        );
+
+        slide.classList.add(
+            "rarity-" + rarity2
+        );
+
+        slide.src = img[slot2];
+        slide.style.animation = 'none';
+        slide.style.transform = 'translateY(-106%)';
+    });
+let reachChance =
+1/7 + getReachBonus();
+
+if(
+    slot1 == slot2 ||
+    Math.random() < getReachBonus()
+){
+
+        reachMode = true;
+        r_count++;
+
+        saveData();
+        updateCount();
+
+        showReach();
+
+        addSP(1);
+
+        if(!exceedMode){
+
     document.body.style.backgroundImage =
     "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";
-if(autoMode){
-
-    autoMode = false;
-
-    clearInterval(timer);
-
-    clearTimeout(timeout1);
-    clearTimeout(timeout2);
-    clearTimeout(timeout3);
-
-    document.getElementById("autobtn").value =
-    "自動モードON";
-
-    document.getElementById("btn3").disabled = false;
-
-    addLog(
-    "リーチ！最後は自分で止めろ！"
-    );
-}
-}
 }
 
+        if(autoMode){
+
+    if(!noReachStop){
+
+        autoMode = false;
+
+        clearInterval(timer);
+
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+
+        document.getElementById("autobtn").value =
+        "自動モードON";
+
+        document.getElementById("btn3").disabled = false;
+
+        addLog(
+        "リーチ！"
+        );
+    }
+}
+    }
+}
 
 function showReach(){
+
+    if(!effectMode){
+    return;
+}else{
 
     const reach =
     document.getElementById(
@@ -795,74 +1114,133 @@ function showReach(){
         'flash-active';
     },10);
 }
+}
 
 function button3(){
+
     document.getElementById('btn3').disabled = true;
     document.getElementById('rbtn').disabled = false;
-document.querySelectorAll('.slide3').forEach(function(slide) {
+
+    // 抽選は1回だけ
     slot3 = Math.floor(Math.random() * img.length);
-    addCollection(slot3);
+    rarity3 = getRandomRarity();
 
-if(
-slot1 == slot2 &&
-luckyLevel > 0
-){
+    addCollection(slot3, rarity3);
 
-    let chance =
-    luckyLevel * 0.05;
+    if(
+        slot1 == slot2 &&
+        luckyLevel > 0
+    ){
 
-    if(Math.random() < chance){
+        let chance =
+        luckyLevel * 0.05;
 
-        slot3 = slot1;
+        if(Math.random() < chance){
 
-        addLog(
-        "Lucky発動！"
+            slot3 = slot1;
+            rarity3 = rarity1; // ←追加
+
+            addLog(
+            "Lucky発動！"
+            );
+
+
+            if(effectMode){
+
+            const overlay =
+            document.getElementById(
+            'flash-overlay'
+            );
+
+            overlay.className='';
+
+            setTimeout(
+            ()=>{
+                overlay.className=
+                'flash-active';
+            },
+            10
+            );
+    document.body.style.backgroundImage =
+    "url('partyparrot.gif')";
+}
+        }
+    }
+
+    document.querySelectorAll('.slide3').forEach(function(slide){
+
+        slide.classList.remove(
+            "rarity-C",
+            "rarity-R",
+            "rarity-E",
+            "rarity-L",
+            "rarity-M",
+            "rarity-S"
         );
+
+        slide.classList.add(
+            "rarity-" + rarity3
+        );
+
+        slide.src = img[slot3];
+        slide.style.animation = 'none';
+        slide.style.transform = 'translateY(-106%)';
+    });
+
+    addLog(
+        getParrotText(slot1, rarity1)
+        + " , "
+        + getParrotText(slot2, rarity2)
+        + " , "
+        + getParrotText(slot3, rarity3)
+    );
+
+    if(slot1 == slot2 && slot2 == slot3){
+
+        if(rarity1 == rarity2 && rarity2 == rarity3){
+        addWinCollection( slot1,rarity1);
+    }
+
         const overlay =
-document.getElementById(
-'flash-overlay'
-);
+        document.getElementById(
+        'flash-overlay'
+        );
 
-overlay.className='';
+        overlay.className = '';
 
-setTimeout(
-()=>{
-overlay.className=
-'flash-active';
-},
-10
-);
+        setTimeout(() => {
+            overlay.className =
+            'flash-active';
+        }, 10);
 
-document.body.style.backgroundImage =
-"url('https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif')";
-    }
-}
-    slide.src = img[slot3];
-    slide.style.animation = 'none';
-    slide.style.transform = 'translateY(-106%)';
-});
-if(slot1==slot2 && slot2==slot3){
-  const overlay = document.getElementById('flash-overlay');
-  overlay.className = '';
-  setTimeout(() => {
-    overlay.className = 'flash-active';
-  }, 10);
+if(noReachStop){
+        addLog("勝利はあなたの手に...");
+}else{
     alert("勝利はあなたの手に...");
-    w_count++;
-    seasonWin++;
-    skillPoint+=3;
-    addWinCollection(slot1);
-    checkAchievements();
-    saveData();
-    updateCount();
-    document.body.style.backgroundImage = "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')"; 
-    
 }
-else{
-        document.body.style.backgroundImage = "none";
+        w_count++;
+        seasonWin++;
+        addSP(3);
+
+        checkAchievements();
+        saveData();
+        updateCount();
+
+        if(effectMode){
+
+    document.body.style.backgroundImage =
+    "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')";
+}
     }
+    else{
+
+        document.body.style.backgroundImage =
+        "none";
+    }
+    updateBankUI();
     reachMode = false;
 }
+
 function rebutton(){
 
     t_count++;
@@ -901,7 +1279,8 @@ function updateCount(){
     luckyLevel * 0.05;
 
     let ravg =
-    100 / img.length;
+    100 / img.length +
+    getReachBonus() * 100;
 
     let baseWin =
     100 / (img.length * img.length);
@@ -984,7 +1363,7 @@ if (autoMode == false) {
 
 function startAutoLoop(){
 
-    if(!autoMode){
+    if(reachMode && !noReachStop){
         return;
     }
 
@@ -1005,7 +1384,7 @@ function startAutoLoop(){
             document.getElementById("btn2").click();
 
             // リーチしたらここで終了
-            if(reachMode){
+            if(reachMode&&!noReachStop){
                 return;
             }
 
@@ -1063,9 +1442,14 @@ function saveData(){
             autoUnlock:autoUnlock,
             speedLevel:speedLevel,
             luckyLevel:luckyLevel,
-
+            noReachStop:noReachStop,
+            bankUnlock:bankUnlock,
+            bankSP:bankSP,
+            secretUnlocked:secretUnlocked,
             collection:collection,
             winCollection:winCollection,
+            exceedUnlock:exceedUnlock,
+            effectMode:effectMode,
             achievements:achievements
         })
     );
@@ -1121,6 +1505,9 @@ function loadData(){
     luckyLevel =
     data.luckyLevel || 0;
 
+    exceedUnlock =
+    data.exceedUnlock || false;
+
     collection =
     data.collection || [];
 
@@ -1129,6 +1516,25 @@ function loadData(){
 
     winCollection =
     data.winCollection || [];
+
+    noReachStop =
+    data.noReachStop || false;
+
+    bankUnlock =
+    data.bankUnlock || false;
+
+    bankSP =
+    data.bankSP || 0;
+
+    secretUnlocked =
+    data.secretUnlocked || false;
+
+    effectMode =
+    data.effectMode ?? true;
+
+    if(speedLevel > 10){
+        speedLevel = 10;
+    }
 }
 
 function resetData(){
@@ -1156,7 +1562,7 @@ function resetData(){
     autoUnlock = false;
     speedLevel = 0;
     luckyLevel = 0;
-
+    noReachStop = false;
     collection = [];
     achievements = [];
 
@@ -1244,7 +1650,7 @@ if(speedLevel >= 10){
 }
 
 function buyLucky(){
-if(luckyLevel >= 10){
+if(luckyLevel >= 5){
 
     addLog(
     "Lucky最大"
@@ -1268,6 +1674,30 @@ if(luckyLevel >= 10){
     updateCount();
     saveData();
 }
+function buyNoReachStop(){
+
+    if(noReachStop){
+
+        addLog(
+        "購入済み"
+        );
+
+        return;
+    }
+
+    if(!spendSP(500)){
+        return;
+    }
+
+    noReachStop = true;
+
+    addLog(
+    "リーチ停止無効化を獲得！"
+    );
+
+    updateRPGUI();
+    saveData();
+}
 
 function addLog(message){
 
@@ -1284,6 +1714,19 @@ function addLog(message){
     "<br>"
     +box.innerHTML;
 }
+
+function getTotalCollectionCount(){
+
+    let total = 0;
+
+    for(let key in collection){
+
+        total += collection[key].length;
+    }
+
+    return total;
+}
+
 function updateRPGUI(){
 
     document.getElementById("skillPoint").textContent =
@@ -1298,8 +1741,21 @@ function updateRPGUI(){
     document.getElementById("bestSeasonWin").textContent =
     bestSeasonWin;
 
-    document.getElementById("speedLevel").textContent =
+    if(exceedMode){
+
+    document.getElementById(
+    "speedLevel"
+    ).textContent =
+    "Exceed!!";
+
+}else{
+
+    document.getElementById(
+    "speedLevel"
+    ).textContent =
     speedLevel;
+
+}
 
     document.getElementById("luckyLevel").textContent =
     luckyLevel;
@@ -1316,8 +1772,23 @@ autoUnlock
     document.getElementById("speedCost").textContent =
     (speedLevel + 1) ** 2;
 
-    document.getElementById("collectionRate").textContent =
-    collection.length + "/7";
+    let speciesCount =
+Object.keys(collection).length;
+
+let totalCount =
+getTotalCollectionCount();
+
+document.getElementById(
+"collectionRate"
+).innerHTML =
+
+"種族：" +
+speciesCount +
+"/7<br>" +
+
+"収集：" +
+totalCount +
+"/42";
 
 let autoBtn =
 document.getElementById("autoBtn");
@@ -1342,16 +1813,96 @@ autoUnlock
     "購入済";
 }
 
-if(speedBtn && speedLevel >= 5){
+if(speedBtn && speedLevel >= 10){
     speedBtn.disabled = true;
     speedBtn.innerHTML = "速度UP(MAX)<span id='speedCost'></span>";
 }
 
 
-if(luckyBtn && luckyLevel >= 10){
+if(luckyBtn && luckyLevel >= 5){
     luckyBtn.disabled = true;
     luckyBtn.innerHTML = "LuckyParrot(MAX)";
 }
+
+let noReachBtn =
+document.getElementById(
+"noReachBtn"
+);
+
+if(
+    noReachBtn &&
+    speedLevel >= 10 &&
+    luckyLevel >= 5
+){
+
+    noReachBtn.style.display =
+    "block";
+
+    if(noReachStop){
+
+        noReachBtn.disabled = true;
+
+        noReachBtn.textContent =
+        "リーチ停止無効化(購入済)";
+    }
+}
+document.getElementById(
+"bankArea"
+).style.display =
+bankUnlock
+? "block"
+: "none";
+
+const bankBtn =
+document.getElementById(
+"bankBtn"
+);
+
+if(bankUnlock){
+
+    bankBtn.disabled = true;
+
+    bankBtn.textContent =
+    "貯金箱（購入済み）";
+
+}else{
+
+    bankBtn.disabled = false;
+
+    bankBtn.textContent =
+    "貯金箱（250SP）";
+}
+const exceedBuyBtn =
+document.getElementById(
+"exceedBuyBtn"
+);
+
+if(
+    noReachStop
+    &&
+    bankUnlock
+    &&
+    speedLevel >= 10
+    &&
+    luckyLevel >= 5
+    &&
+    !exceedUnlock
+){
+
+    exceedBuyBtn.style.display =
+    "block";
+
+}else{
+
+    exceedBuyBtn.style.display =
+    "none";
+}
+document.getElementById(
+"extendBtn"
+).style.display =
+exceedUnlock
+? "inline-block"
+: "none";
 }
 
 function seasonCheck(){
@@ -1363,11 +1914,12 @@ function seasonCheck(){
     let reward =
     5 + seasonWin*2;
 
-    skillPoint += reward;
+    addSP(reward);
 
     if(seasonWin > bestSeasonWin){
         bestSeasonWin = seasonWin;
     }
+if(noReachStop){
 
     addLog(
         "シーズン終了！ WIN:("
@@ -1376,11 +1928,13 @@ function seasonCheck(){
         + reward
     );
 
+}else{
     alert(
         "シーズン終了！\n\n"
         +"WIN:"+seasonWin+"\n"
         +"獲得SP:"+reward
     );
+}
 
     seasonCount = 0;
     seasonWin = 0;
@@ -1408,7 +1962,7 @@ function unlockAchievement(id){
         return;
     }
 
-    skillPoint += ach.reward;
+     addSP(ach.reward);
 
     addLog(
     "実績解除！ "
@@ -1461,7 +2015,7 @@ function checkAchievements(){
         );
     }
 
-    if(collection.length >= 7){
+    if(Object.keys(collection).length >= 7){
         unlockAchievement(
         "collection_complete"
         );
@@ -1515,25 +2069,31 @@ function updateAchievementUI(){
     });
 }
 
-function addCollection(index){
+function addCollection(index, rarity){
 
-    if(
-    collection.includes(index)
-    ){
+    if(!collection[index]){
+        collection[index] = [];
+    }
+
+    if(collection[index].includes(rarity)){
         return;
     }
 
-    collection.push(index);
+    collection[index].push(rarity);
+    if(rarity == "S"){
+    secretUnlocked = true;
+}
 
     addLog(
-    "NEW! "
-    + parrotNames[index]
+        "NEW! "
+        + parrotNames[index]
+        + " ["
+        + rarity
+        + "]"
     );
 
     updateCollectionUI();
-
     checkAchievements();
-
     saveData();
 }
 
@@ -1550,6 +2110,9 @@ function updateCollectionUI(){
 
     list.innerHTML = "";
 
+    const rarityOrder =
+    ["C","R","E","L","M","S"];
+
     for(
     let i=0;
     i<parrotNames.length;
@@ -1561,70 +2124,124 @@ function updateCollectionUI(){
         "li"
         );
 
-        if(
-        collection.includes(i)
-        ){
-
-            li.className =
-            "unlocked";
-
-            li.innerHTML = parrotNames[i];
-            if(
-winCollection.includes(i)
-){
-
-    li.classList.add(
-    "blessing"
-    );
-}
-
-        }else{
+        if(!collection[i]){
 
             li.className =
             "locked";
 
             li.textContent =
             "？？？？？";
+
+            list.appendChild(li);
+
+            continue;
         }
+
+        let html =
+        parrotNames[i] + "<br>";
+
+        rarityOrder.forEach(
+        function(r){
+
+            if(
+            r=="S" &&
+            !secretUnlocked
+            ){
+                return;
+            }
+
+            let cls =
+            "rarity-lock";
+
+            if(
+            collection[i].includes(r)
+            ){
+                cls =
+                "rarity-found";
+            }
+
+            let key =
+            i + "_" + r;
+
+            if(
+            winCollection[key]
+            ){
+                cls =
+                "rarity-blessing";
+            }
+
+            html +=
+            "<span class='"
+            + cls +
+            "'>["
+            + r +
+            "]</span> ";
+        });
+
+        li.innerHTML = html;
 
         list.appendChild(li);
     }
 }
 
-function addWinCollection(index){
+function addWinCollection(
+    index,
+    rarity
+){
+
+    let key =
+    index + "_" + rarity;
 
     if(
-    winCollection.includes(index)
+    winCollection[key]
     ){
         return;
     }
 
-    winCollection.push(index);
+    winCollection[key] = true;
 
-    addLog(
-    parrotNames[index]
-    + "の加護を獲得！"
-    );
-    updateCollectionUI(); 
+    let rarityInfo =
+rarityData.find(
+r => r.id === rarity
+);
+
+addLog(
+parrotNames[index]
++ " ["
++ rarity
++ "] の加護を獲得！ "
++ "+"
++ (rarityInfo.bonus*100).toFixed(1)
++ "%"
+);
+
+    updateCollectionUI();
     updateCount();
     saveData();
 }
 
 function getReachBonus(){
 
-    if(winCollection.length >= 7){
-        return 0.07;
+    let totalBonus = 0;
+
+    for(let key in winCollection){
+
+        let rarity =
+        key.split("_")[1];
+
+        let data =
+        rarityData.find(
+            r => r.id === rarity
+        );
+
+        if(data){
+
+            totalBonus +=
+            data.bonus;
+        }
     }
 
-    if(winCollection.length >= 3){
-        return 0.03;
-    }
-
-    if(winCollection.length >= 1){
-        return 0.01;
-    }
-
-    return 0;
+    return totalBonus;
 }
 
 function openHowTo(){
@@ -1639,7 +2256,192 @@ function closeHowTo(){
     document.getElementById(
     "howtoModal"
     ).style.display = "none";
+}
+
+function buyBank(){
+
+    if(bankUnlock){
+        return;
+    }
+
+    if(!spendSP(250)){
+        return;
+    }
+
+    bankUnlock = true;
+
+    addLog(
+    "貯金箱を解放！"
+    );
+
+    updateRPGUI();
+    saveData();
+}
+
+function getBankRate(){
+
+    const value = {
+
+        C:-1,
+        R:0,
+        E:1,
+        L:2,
+        M:3,
+        S:5
+    };
+
+    return (
+        (value[rarity1] || 0)
+        +
+        (value[rarity2] || 0)
+        +
+        (value[rarity3] || 0)
+    );
+}
+
+function withdrawBank(){
+
+    if(bankSP == 0){
+        return;
+    }
+
+    let rate =
+    getBankRate();
+
+    let result =
+    bankSP * rate;
+
+    skillPoint += result;
+
+    addLog(
+    "貯金箱 "
+    + bankSP
+    + " × "
+    + rate
+    + " = "
+    + result
+    + "SP"
+    );
+
+    bankSP = 0;
+
+    updateBankUI();
+    updateRPGUI();
+    saveData();
+}
+
+function updateBankUI(){
+
+    let rate =
+    getBankRate();
+
+    document.getElementById(
+    "bankSPText"
+    ).textContent =
+    bankSP;
+
+    document.getElementById(
+    "bankRate"
+    ).textContent =
+    rate;
+
+    document.getElementById(
+    "bankResult"
+    ).textContent =
+    bankSP * rate;
+}
+
+function addSP(amount){
+
+    if(bankUnlock){
+
+        bankSP += amount;
+
+        updateBankUI();
+
+    }else{
+
+        skillPoint += amount;
+    }
+}
+
+function startExceed(){
+
+    if(!exceedUnlock){
+        return;
+    }
+
+    exceedMode = true;
+    speedLevel = 14;
+
+    updateRPGUI();
+}
+function stopExceed(){
+
+    exceedMode = false;
+    speedLevel = 10;
+
+    updateRPGUI();
+}
+setInterval(function(){
+
+    if(
+        exceedMode
+    ){
+
+        if(
+            skillPoint >= 8
+        ){
+
+            skillPoint -= 1;
+            speedLevel = 14;
+
+        }else{
+
+            exceedMode = false;
+            speedLevel = 10;
+        }
+
+        updateRPGUI();
+    }
+
+},125);
+
+function buyExceed(){
+
+    if(exceedUnlock){
+        return;
+    }
+
+    if(!spendSP(2500)){
+        return;
+    }
+
+    exceedUnlock = true;
+
+    document.getElementById(
+    "extendBtn"
+    ).style.display =
+    "inline-block";
+
+    addLog(
+    "⚡ Exceed!! 解放！"
+    );
+
+    updateRPGUI();
+    saveData();
+}
+
+function toggleEffect(){
+
+    effectMode = !effectMode;
+
+    document.getElementById(
+    "effectBtn"
+    ).value =
+    effectMode
+    ? "演出：ON"
+    : "演出：控えめ";
+
+    saveData();
 }</script>
-            
-        
-    </body>
