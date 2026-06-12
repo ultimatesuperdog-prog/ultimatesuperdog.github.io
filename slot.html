@@ -689,47 +689,49 @@ onclick="resetData()">
 </div>
 
 <div id="howtoModal" class="modal">
+<div class="modal-content">
 
-    <div class="modal-content">
+    <span
+    class="close"
+    onclick="closeHowTo()">
+    ×
+    </span>
 
-        <span class="close"
-        onclick="closeHowTo()">
-        ×
-        </span>
+        <h2><img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" style="width:24px;">このゲームについて</h2>
 
-        <h2><img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" style="width:20px;">How To Play</h2>
+<p>
+レバーを引いて3つ揃えよう！
+</p>
 
-        <p>① レバーを引く</p>
-        <p>② ボタンで停止</p>
-        <p>③ 3つ揃えてWIN！</p>
+<hr>
 
-        <hr>
+<h3>基本ルール</h3>
 
-        <h3>スキルポイント</h3>
+<ul>
+<li>リーチでSP獲得</li>
+<li>WINでSP獲得</li>
+<li>SPでスキルを購入</li>
+</ul>
 
-        <ul>
-            <li>リーチ：+1</li>
-            <li>WIN：+3</li>
-            <li>シーズン報酬</li>
-            <li>実績報酬</li>
-            <li>図鑑コンプ報酬</li>
-        </ul>
+<hr>
 
-        <hr>
+<h3>スキル</h3>
 
-        <h3>図鑑ボーナス</h3>
+<ul>
+<li>自動停止解放</li>
+<li>速度UP</li>
+<li>LuckyParrot</li>
+</ul>
 
-        <p>
-        1種 WIN → リーチ率+1%
-        </p>
+<hr>
 
-        <p>
-        3種 WIN → リーチ率+2%
-        </p>
+<h3>目標</h3>
 
-        <p>
-        7種 WIN → リーチ率+4%
-        </p>
+<p>
+まずは速度Lv10とLuckyLv5を目指そう！
+</p>
+
+<div id="howtoUnlocks"></div>
 
     </div>
 
@@ -1903,6 +1905,8 @@ document.getElementById(
 exceedUnlock
 ? "inline-block"
 : "none";
+
+updateHowTo();
 }
 
 function seasonCheck(){
@@ -2444,4 +2448,70 @@ function toggleEffect(){
     : "演出：控えめ";
 
     saveData();
+}
+
+function updateHowTo(){
+
+    let html = "";
+
+    if(
+        speedLevel >= 10 &&
+        luckyLevel >= 5
+    ){
+
+        html += `
+        <hr>
+
+        <h3>? 貯金箱</h3>
+
+        <p>
+        獲得SPが自動で貯金されます。
+        </p>
+
+        <p>
+        現在停止中の絵柄によって
+        倍率が変化します。
+        </p>
+        `;
+    }
+
+    if(bankUnlock){
+
+        html += `
+        <hr>
+
+        <h3>? リーチ停止無効化</h3>
+
+        <p>
+        リーチしても自動モードが
+        停止しなくなります。
+        </p>
+
+        <p>
+        シーズン通知も簡略化されます。
+        </p>
+        `;
+    }
+
+    if(noReachStop){
+
+        html += `
+        <hr>
+
+        <h3>⚡ Exceed!!</h3>
+
+        <p>
+        長押し中、
+        速度Lv14になります。
+        </p>
+
+        <p>
+        消費：8SP/秒
+        </p>
+        `;
+    }
+
+    document.getElementById(
+    "howtoUnlocks"
+    ).innerHTML = html;
 }</script>
