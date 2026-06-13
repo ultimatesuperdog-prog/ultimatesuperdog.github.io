@@ -1312,7 +1312,6 @@ function button3(){
         if(rarity1 == rarity2 && rarity2 == rarity3){
         addWinCollection( slot1,rarity1);
     }
-    playSE("win");
         const overlay =
         document.getElementById(
         'flash-overlay'
@@ -1348,6 +1347,7 @@ if(noReachStop){
         document.body.style.backgroundImage =
         "none";
     }
+    playSE("win");
     updateBankUI();
     reachMode = false;
 }
@@ -2891,6 +2891,6 @@ function rebirth(){
         updateBankUI();
 
         saveData();
-
+    window.location.reload();
     }, 1200);
 }</script>
