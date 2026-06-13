@@ -615,6 +615,18 @@ onclick="buyNoReachStop()">
 <br>
 
 <button
+id="luckySeasonBtn"
+style="display:none"
+onclick="buyLuckySeason()">
+
+✨ Lucky Season
+(1000SP)
+
+</button>
+
+<br>
+
+<button
 id="exceedBuyBtn"
 style="display:none"
 onclick="buyExceed()">
@@ -647,7 +659,6 @@ LuckyLv：
 <h2>図鑑</h2>
 
 <p>
-収集率：
 <span id="collectionRate">0/7</span>
 </p>
 
@@ -784,6 +795,10 @@ let exceedTimer = null;
 
 let effectMode = true;
 
+let luckySeasonUnlock = false;
+let luckySeasonCounter = 0;
+let luckySeasonActive = false;
+
 let speciesCount = Object.keys(collection).length;
 
 const parrotNames = [
@@ -806,6 +821,26 @@ const rarityData = [
 ];
 
 function getRandomRarity(){
+
+    if(luckySeasonActive){
+
+    let rand =
+    Math.random() * 100;
+
+    if(rand < 60){
+        return "E";
+    }
+
+    if(rand < 85){
+        return "L";
+    }
+
+    if(rand < 95){
+        return "M";
+    }
+
+    return "S";
+}
 
     let rand =
     Math.random() * 100;
@@ -1010,8 +1045,18 @@ function button2(){
     document.getElementById('btn3').disabled = false;
 
     // 抽選は1回だけ
-    slot2 = Math.floor(Math.random() * img.length);
-    rarity2 = getRandomRarity();
+    if(Math.random() < getReachBonus()){
+
+    slot2 = slot1;
+
+}else{
+
+    slot2 = Math.floor(
+        Math.random() * img.length
+    );
+}
+
+rarity2 = getRandomRarity();
 
     addCollection(slot2, rarity2);
 
@@ -1034,13 +1079,8 @@ function button2(){
         slide.style.animation = 'none';
         slide.style.transform = 'translateY(-106%)';
     });
-let reachChance =
-1/7 + getReachBonus();
 
-if(
-    slot1 == slot2 ||
-    Math.random() < getReachBonus()
-){
+if(slot1 == slot2){
 
         reachMode = true;
         r_count++;
@@ -1248,6 +1288,28 @@ function rebutton(){
     t_count++;
     seasonCount++;
 
+    if(luckySeasonUnlock){
+
+    luckySeasonCounter++;
+
+    if(
+        luckySeasonCounter >= 10
+    ){
+
+        luckySeasonCounter = 0;
+
+        luckySeasonActive = true;
+
+        addLog(
+        "✨ Lucky Season発動！"
+        );
+
+    }else{
+
+        luckySeasonActive = false;
+    }
+}
+
     seasonCheck();
     saveData();
     updateCount();
@@ -1451,6 +1513,7 @@ function saveData(){
             collection:collection,
             winCollection:winCollection,
             exceedUnlock:exceedUnlock,
+            luckySeasonUnlock:luckySeasonUnlock,
             effectMode:effectMode,
             achievements:achievements
         })
@@ -1533,6 +1596,9 @@ function loadData(){
 
     effectMode =
     data.effectMode ?? true;
+
+    luckySeasonUnlock =
+    data.luckySeasonUnlock || false;
 
     if(speedLevel > 10){
         speedLevel = 10;
@@ -1874,22 +1940,13 @@ if(bankUnlock){
     bankBtn.textContent =
     "貯金箱（250SP）";
 }
+
 const exceedBuyBtn =
 document.getElementById(
 "exceedBuyBtn"
 );
 
-if(
-    noReachStop
-    &&
-    bankUnlock
-    &&
-    speedLevel >= 10
-    &&
-    luckyLevel >= 5
-    &&
-    !exceedUnlock
-){
+if(luckySeasonUnlock){
 
     exceedBuyBtn.style.display =
     "block";
@@ -1899,6 +1956,22 @@ if(
     exceedBuyBtn.style.display =
     "none";
 }
+
+if(exceedUnlock){
+
+    exceedBuyBtn.disabled = true;
+
+    exceedBuyBtn.textContent =
+    "ExceedMode（購入済み）";
+
+}else{
+
+    exceedBuyBtn.disabled = false;
+
+    exceedBuyBtn.textContent =
+    "ExceedMode（2500SP）";
+}
+
 document.getElementById(
 "extendBtn"
 ).style.display =
@@ -1906,12 +1979,35 @@ exceedUnlock
 ? "inline-block"
 : "none";
 
+
+
+const luckySeasonBtn =
+document.getElementById(
+"luckySeasonBtn"
+);
+
+luckySeasonBtn.style.display =
+
+noReachStop
+
+? "block"
+: "none";
+
+if(luckySeasonUnlock){
+
+    luckySeasonBtn.disabled =
+    true;
+
+    luckySeasonBtn.textContent =
+    "✨ Lucky Season（購入済）";
+}
+
 updateHowTo();
 }
 
 function seasonCheck(){
 
-    if(seasonCount < 100){
+    if(seasonCount < 101){
         return;
     }
 
@@ -2462,7 +2558,7 @@ function updateHowTo(){
         html += `
         <hr>
 
-        <h3>? 貯金箱</h3>
+        <h3>貯金箱</h3>
 
         <p>
         獲得SPが自動で貯金されます。
@@ -2480,7 +2576,7 @@ function updateHowTo(){
         html += `
         <hr>
 
-        <h3>? リーチ停止無効化</h3>
+        <h3>リーチ停止無効化</h3>
 
         <p>
         リーチしても自動モードが
@@ -2495,14 +2591,28 @@ function updateHowTo(){
 
     if(noReachStop){
 
+    html += `
+    <hr>
+
+    <h3>Lucky Season</h3>
+
+    <p>
+    10回転に1回、
+    レアリティ抽選が強化されます。
+    </p>
+    `;
+}
+
+    if(luckySeasonUnlock){
+
         html += `
         <hr>
 
-        <h3>⚡ Exceed!!</h3>
+        <h3>Exceed!!</h3>
 
         <p>
         長押し中、
-        速度Lv14になります。
+        SPを消費して超高速回転をします。
         </p>
 
         <p>
@@ -2514,4 +2624,29 @@ function updateHowTo(){
     document.getElementById(
     "howtoUnlocks"
     ).innerHTML = html;
+}
+
+function buyLuckySeason(){
+
+    if(luckySeasonUnlock){
+
+        addLog(
+        "購入済み"
+        );
+
+        return;
+    }
+
+    if(!spendSP(1000)){
+        return;
+    }
+
+    luckySeasonUnlock = true;
+
+    addLog(
+    "Lucky Season 解放！"
+    );
+
+    updateRPGUI();
+    saveData();
 }</script>
