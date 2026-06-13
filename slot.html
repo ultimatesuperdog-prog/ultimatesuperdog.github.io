@@ -1336,7 +1336,8 @@ if(noReachStop){
         checkAchievements();
         saveData();
         updateCount();
-
+        
+        playSE("win");
         if(canPlayEffect()){
     document.body.style.backgroundImage =
     "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')";
@@ -1347,7 +1348,6 @@ if(noReachStop){
         document.body.style.backgroundImage =
         "none";
     }
-    playSE("win");
     updateBankUI();
     reachMode = false;
 }
