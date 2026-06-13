@@ -1028,23 +1028,20 @@ exceedBtn.addEventListener("touchend", function(){
     stopExceedSE();
 });
 
-exceedBtn.addEventListener(
-"mousedown",
-startExceed,
-startExceedSE
-);
+exceedBtn.addEventListener("mousedown", () => {
+    startExceed();
+    startExceedSE();
+});
 
-exceedBtn.addEventListener(
-"mouseup",
-stopExceed,
-stopExceedSE
-);
+exceedBtn.addEventListener("mouseup", () => {
+    stopExceed();
+    stopExceedSE();
+});
 
-exceedBtn.addEventListener(
-"mouseleave",
-stopExceed,
-stopExceedSE
-);
+exceedBtn.addEventListener("mouseleave", () => {
+    stopExceed();
+    stopExceedSE();
+});
 
 document.getElementById(
 "effectBtn"
@@ -2722,11 +2719,19 @@ function startExceedSE(){
 
     const audio = SE.exceedLoop;
 
-    audio.pause();           // 保険
+    audio.pause();
     audio.currentTime = 0;
-    audio.loop = true;       // ←先に設定
+    audio.loop = true;
+    audio.volume = masterVolume;
 
-    audio.play();
+    const playPromise = audio.play();
+
+    if(playPromise !== undefined){
+        playPromise.catch(err => {
+            console.log("exceed loop play failed:", err);
+            exceedSEPlaying = false;
+        });
+    }
 }
 function stopExceedSE(){
 
@@ -2738,6 +2743,7 @@ function stopExceedSE(){
 
     audio.pause();
     audio.currentTime = 0;
+    audio.loop = false; 
 }
 
 function applyVolume(){
