@@ -2720,9 +2720,13 @@ function startExceedSE(){
 
     exceedSEPlaying = true;
 
-    SE.exceedLoop.currentTime = 0;
-    SE.exceedLoop.loop = true;
-    SE.exceedLoop.play();
+    const audio = SE.exceedLoop;
+
+    audio.pause();           // 保険
+    audio.currentTime = 0;
+    audio.loop = true;       // ←先に設定
+
+    audio.play();
 }
 function stopExceedSE(){
 
@@ -2730,8 +2734,10 @@ function stopExceedSE(){
 
     exceedSEPlaying = false;
 
-    SE.exceedLoop.pause();
-    SE.exceedLoop.currentTime = 0;
+    const audio = SE.exceedLoop;
+
+    audio.pause();
+    audio.currentTime = 0;
 }
 
 function applyVolume(){
