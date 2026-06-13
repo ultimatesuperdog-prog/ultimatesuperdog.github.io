@@ -523,7 +523,7 @@ style="display:none">
 <input
 type="button"
 id="extendBtn"
-value="⚡ Exceed!!"
+value="Exceed!!"
 style="display:none;">
 
 </div>
@@ -633,7 +633,7 @@ id="luckySeasonBtn"
 style="display:none"
 onclick="buyLuckySeason()">
 
-✨ Lucky Season
+LuckySeason
 (1000SP)
 
 </button>
@@ -645,9 +645,17 @@ id="exceedBuyBtn"
 style="display:none"
 onclick="buyExceed()">
 
-⚡ Exceed!!
+Exceed!!
 (2500SP)
 
+</button>
+
+<br>
+
+<button
+id="rebirthBtn"
+onclick="rebirth()">
+転生（準備中）
 </button>
 
 <hr>
@@ -665,6 +673,15 @@ onclick="buyExceed()">
 <p>
 LuckyLv：
 <span id="luckyLevel">0</span>
+</p>
+
+<p>
+転生回数：
+<span id="rebirthCount">0</span>
+</p>
+<p>
+転生ボーナス：
+<span id="rebirthBonus">未解放</span>
 </p>
 
 </div>
@@ -761,8 +778,7 @@ onclick="resetData()">
 
 </div>
 
-</body>
-</html><script>const SAVE_VERSION = 260614;
+</body><script>const SAVE_VERSION = 260614;
 
 let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
             'https://cultofthepartyparrot.com/parrots/hd/parrot.gif',
@@ -847,6 +863,9 @@ let effectMode = true;
 let luckySeasonUnlock = false;
 let luckySeasonCounter = 0;
 let luckySeasonActive = false;
+
+let rebirthCount = 0;
+let rebirthSkills = [];
 
 let speciesCount = Object.keys(collection).length;
 
@@ -1392,7 +1411,7 @@ document.querySelectorAll('.slide3').forEach(function(slide) {
 function updateCount(){
 
     let luckyRate =
-    luckyLevel * 0.05;
+    (luckyLevel + rebirthCount * 0.2) * 0.05;
 
     let ravg =
     100 / img.length +
@@ -1567,6 +1586,7 @@ function saveData(){
             effectMode:effectMode,
             masterVolume: masterVolume,
             seEnabled: seEnabled,
+            rebirthCount: rebirthCount,
             achievements:achievements
         })
     );
@@ -1654,6 +1674,8 @@ function loadData(){
 
     masterVolume = data.masterVolume ?? 0.5;
     seEnabled = data.seEnabled ?? true;
+
+    rebirthCount = data.rebirthCount || 0;
 
     if(speedLevel > 10){
         speedLevel = 10;
@@ -1884,6 +1906,9 @@ function updateRPGUI(){
     document.getElementById("luckyLevel").textContent =
     luckyLevel;
 
+    document.getElementById("rebirthCount").textContent =
+    rebirthCount;
+
     document.getElementById("autoState").textContent =
     autoUnlock ? "購入済" : "未購入";
     document.getElementById(
@@ -2055,8 +2080,45 @@ if(luckySeasonUnlock){
     true;
 
     luckySeasonBtn.textContent =
-    "✨ Lucky Season（購入済）";
+    "Lucky Season（購入済）";
 }
+
+const rebirthBtn = document.getElementById("rebirthBtn");
+
+if(rebirthBtn){
+
+    let required = 10000 * (rebirthCount + 1);
+
+    rebirthBtn.textContent =
+        "転生（必要：" + required + "回転）";
+
+    if(t_count >= required){
+
+        rebirthBtn.disabled = false;
+        rebirthBtn.textContent = "転生可能！";
+
+    }else{
+
+        rebirthBtn.disabled = true;
+    }
+}
+let rebirthBonusText = "未解放";
+
+if(rebirthCount >= 10){
+    rebirthBonusText = "EX解放";
+}
+else if(rebirthCount >= 5){
+    rebirthBonusText = "スキル枠解放";
+}
+else if(rebirthCount >= 3){
+    rebirthBonusText = "Lucky強化";
+}
+else if(rebirthCount >= 1){
+    rebirthBonusText = "加護強化";
+}
+
+document.getElementById("rebirthBonus").textContent =
+rebirthBonusText;
 
 updateHowTo();
 }
@@ -2391,11 +2453,12 @@ function getReachBonus(){
         );
 
         if(data){
-
-            totalBonus +=
-            data.bonus;
+            totalBonus += data.bonus;
         }
     }
+
+    // ★転生ボーナス追加
+    totalBonus *= (1 + rebirthCount * 0.1);
 
     return totalBonus;
 }
@@ -2759,4 +2822,75 @@ function changeVolume(val){
         Math.round(masterVolume * 100) + "%";
 
     applyVolume();
+}
+
+function rebirth(){
+
+    let required = 10000 * rebirthCount;
+
+    if(t_count < required){
+        addLog("転生条件を満たしていない");
+        return;
+    }
+
+    playSE("ui");
+
+    // 軽い転生演出（既存フラッシュ流用）
+    const overlay = document.getElementById("flash-overlay");
+
+    let flashes = 0;
+
+    let interval = setInterval(() => {
+
+        overlay.className = '';
+        void overlay.offsetWidth;
+        overlay.className = 'flash-active';
+
+        flashes++;
+
+        if(flashes >= 3){
+            clearInterval(interval);
+        }
+
+    }, 300);
+
+    setTimeout(() => {
+
+        rebirthCount++;
+        skillPoint += 50 * rebirthCount;
+        addLog("転生ボーナスSP +" + (50 * rebirthCount));
+
+        // === リセット処理 ===
+        skillPoint = 0;
+
+        seasonCount = 0;
+        seasonWin = 0;
+
+        t_count = 0;
+        r_count = 0;
+        w_count = 0;
+
+        autoUnlock = false;
+        speedLevel = 0;
+        luckyLevel = 0;
+        noReachStop = false;
+
+        bankUnlock = false;
+        bankSP = 0;
+
+        exceedUnlock = false;
+        exceedMode = false;
+
+        // 重要：図鑑のみ保持
+        // collection / winCollection は残す
+
+        addLog("転生が完了した");
+
+        updateRPGUI();
+        updateCount();
+        updateBankUI();
+
+        saveData();
+
+    }, 1200);
 }</script>
