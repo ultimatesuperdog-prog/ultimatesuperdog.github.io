@@ -471,6 +471,20 @@ type="button"
 id="effectBtn"
 value="演出：ON"
 onclick="toggleEffect()">
+
+<p style="color:white;">音量
+<input type="range"
+id="volumeSlider"
+min="0"
+max="1"
+step="0.01"
+value="0.5"
+oninput="changeVolume(this.value)"></p>
+
+
+<span id="volumeValue">50%</span>
+
+
 <div class="parent">
     <div class="lever">
         <input type="button" class="circle"onclick="rebutton()" id="rbtn">
@@ -759,6 +773,42 @@ let img = ['https://cultofthepartyparrot.com/parrots/hd/partyparrot.gif',
             'https://cultofthepartyparrot.com/guests/hd/vibepartycat.gif'
             ];
 
+const SE = {
+    lever: new Audio("se/lever.mp3"),
+    btn: new Audio("se/button.mp3"),
+    reach: new Audio("se/reach.mp3"),
+    win: new Audio("se/win.mp3"),
+    luckySeason: new Audio("se/lucky_season.mp3"),
+    //exceed: new Audio("se/exceed.mp3"),
+
+    exceedLoop: new Audio("se/exceed_loop.mp3"),
+    money: new Audio("se/money.mp3"),
+    ui: new Audio("se/ui.mp3"),
+    collect: new Audio("se/collect.mp3"),
+    achievement: new Audio("se/achievement.mp3"),
+};
+let exceedSEPlaying = false;
+
+function toggleSE(){
+    seEnabled = !seEnabled;
+    addLog(seEnabled ? "SE ON" : "SE OFF");
+}
+
+let seEnabled = true;
+let masterVolume = 0.5;
+
+function playSE(name){
+    if(!seEnabled) return;
+
+    const sound = SE[name];
+    if(!sound) return;
+
+    sound.volume = masterVolume;
+
+    sound.currentTime = 0;
+    sound.play();
+}
+
 let slot1 = 0;
 let slot2 = 0;
 let slot3 = 0;
@@ -968,19 +1018,32 @@ document.getElementById(
 "extendBtn"
 );
 
+exceedBtn.addEventListener("touchstart", function(){
+    startExceed();
+    startExceedSE();
+});
+
+exceedBtn.addEventListener("touchend", function(){
+    stopExceed();
+    stopExceedSE();
+});
+
 exceedBtn.addEventListener(
 "mousedown",
-startExceed
+startExceed,
+startExceedSE
 );
 
 exceedBtn.addEventListener(
 "mouseup",
-stopExceed
+stopExceed,
+stopExceedSE
 );
 
 exceedBtn.addEventListener(
 "mouseleave",
-stopExceed
+stopExceed,
+stopExceedSE
 );
 
 document.getElementById(
@@ -989,6 +1052,12 @@ document.getElementById(
 effectMode
 ? "演出：ON"
 : "演出：控えめ";
+
+document.getElementById("volumeSlider").value = masterVolume;
+document.getElementById("volumeValue").textContent =
+    Math.round(masterVolume * 100) + "%";
+
+applyVolume();
 
     updateCount();
     updateRPGUI();
@@ -999,7 +1068,7 @@ effectMode
 }
 
 function button1(){
-
+    playSE("btn");
     document.getElementById('btn1').disabled = true;
     document.getElementById('btn2').disabled = false;
 
@@ -1039,7 +1108,7 @@ function button1(){
 }
 
 function button2(){
-
+    playSE("btn");
     document.getElementById('btn2').disabled = true;
     document.getElementById('btn3').disabled = false;
 
@@ -1080,7 +1149,7 @@ rarity2 = getRandomRarity();
     });
 
 if(slot1 == slot2){
-
+    playSE("reach");
         reachMode = true;
         r_count++;
 
@@ -1124,41 +1193,27 @@ if(slot1 == slot2){
 
 function showReach(){
 
-    if(!effectMode){
-    return;
-}else{
+    if(!canPlayEffect()){
+        return;
+    }
 
-    const reach =
-    document.getElementById(
-    "reachText"
-    );
+    const reach = document.getElementById("reachText");
 
-    reach.classList.remove(
-    "reach-show"
-    );
-
+    reach.classList.remove("reach-show");
     void reach.offsetWidth;
+    reach.classList.add("reach-show");
 
-    reach.classList.add(
-    "reach-show"
-    );
+    const overlay = document.getElementById("flash-overlay");
 
-    const overlay =
-    document.getElementById(
-    "flash-overlay"
-    );
-
-    overlay.className='';
+    overlay.className = '';
 
     setTimeout(()=>{
-        overlay.className=
-        'flash-active';
+        overlay.className = 'flash-active';
     },10);
-}
 }
 
 function button3(){
-
+    playSE("btn");
     document.getElementById('btn3').disabled = true;
     document.getElementById('rbtn').disabled = false;
 
@@ -1186,7 +1241,7 @@ function button3(){
             );
 
 
-            if(effectMode){
+            if(canPlayEffect()){
 
             const overlay =
             document.getElementById(
@@ -1241,7 +1296,7 @@ function button3(){
         if(rarity1 == rarity2 && rarity2 == rarity3){
         addWinCollection( slot1,rarity1);
     }
-
+    playSE("win");
         const overlay =
         document.getElementById(
         'flash-overlay'
@@ -1267,8 +1322,7 @@ if(noReachStop){
         saveData();
         updateCount();
 
-        if(effectMode){
-
+        if(canPlayEffect()){
     document.body.style.backgroundImage =
     "url('https://enaenabja.sakura.ne.jp/kfx/download/effect/img/effepic_ryusen_housha.gif')";
 }
@@ -1283,6 +1337,7 @@ if(noReachStop){
 }
 
 function rebutton(){
+    playSE("lever");
 
     t_count++;
     seasonCount++;
@@ -1300,8 +1355,9 @@ function rebutton(){
         luckySeasonActive = true;
 
         addLog(
-        "✨ Lucky Season発動！"
+        "Lucky Season発動！"
         );
+        playSE("luckySeason");
 
     }else{
 
@@ -1392,8 +1448,6 @@ document.getElementById('avg').innerHTML =
 +" ("+rrate+"%)<br>"
 +"WIN回数："+w_count
 +" ("+wrate+"%)";
-
-"加護："+winCollection.length+"/7"
 }
 
 
@@ -1514,6 +1568,8 @@ function saveData(){
             exceedUnlock:exceedUnlock,
             luckySeasonUnlock:luckySeasonUnlock,
             effectMode:effectMode,
+            masterVolume: masterVolume,
+            seEnabled: seEnabled,
             achievements:achievements
         })
     );
@@ -1599,13 +1655,16 @@ function loadData(){
     luckySeasonUnlock =
     data.luckySeasonUnlock || false;
 
+    masterVolume = data.masterVolume ?? 0.5;
+    seEnabled = data.seEnabled ?? true;
+
     if(speedLevel > 10){
         speedLevel = 10;
     }
 }
 
 function resetData(){
-
+    playSE("ui");
     if(
         !confirm(
             "本当に全データを削除しますか？"
@@ -1654,7 +1713,8 @@ function spendSP(cost){
     }
 
     skillPoint -= cost;
-
+    
+    playSE("money");
     saveData();
     updateRPGUI();
 
@@ -2069,7 +2129,7 @@ function unlockAchievement(id){
     + " SP+"
     + ach.reward
     );
-
+    playSE("achievement");
     updateAchievementUI();
 
      updateRPGUI();
@@ -2190,7 +2250,7 @@ function addCollection(index, rarity){
         + rarity
         + "]"
     );
-
+    playSE("collect");
     updateCollectionUI();
     checkAchievements();
     saveData();
@@ -2344,14 +2404,14 @@ function getReachBonus(){
 }
 
 function openHowTo(){
-
+    playSE("ui");
     document.getElementById(
     "howtoModal"
     ).style.display = "block";
 }
 
 function closeHowTo(){
-
+    playSE("ui");
     document.getElementById(
     "howtoModal"
     ).style.display = "none";
@@ -2403,7 +2463,7 @@ function withdrawBank(){
     if(bankSP == 0){
         return;
     }
-
+    playSE("money");
     let rate =
     getBankRate();
 
@@ -2532,15 +2592,16 @@ function buyExceed(){
 }
 
 function toggleEffect(){
-
+    playSE("ui");
     effectMode = !effectMode;
 
-    document.getElementById(
-    "effectBtn"
-    ).value =
-    effectMode
-    ? "演出：ON"
-    : "演出：控えめ";
+    document.getElementById("effectBtn").value =
+        effectMode ? "演出：ON" : "演出：控えめ";
+
+    if(!effectMode){
+        document.getElementById("flash-overlay").className = '';
+        document.body.style.backgroundImage = "none";
+    }
 
     saveData();
 }
@@ -2648,4 +2709,42 @@ function buyLuckySeason(){
 
     updateRPGUI();
     saveData();
+}
+function canPlayEffect(){
+    return effectMode === true;
+}
+function startExceedSE(){
+
+    if(!seEnabled) return;
+    if(exceedSEPlaying) return;
+
+    exceedSEPlaying = true;
+
+    SE.exceedLoop.currentTime = 0;
+    SE.exceedLoop.loop = true;
+    SE.exceedLoop.play();
+}
+function stopExceedSE(){
+
+    if(!exceedSEPlaying) return;
+
+    exceedSEPlaying = false;
+
+    SE.exceedLoop.pause();
+    SE.exceedLoop.currentTime = 0;
+}
+
+function applyVolume(){
+    for(const key in SE){
+        SE[key].volume = masterVolume;
+    }
+}
+
+function changeVolume(val){
+    masterVolume = parseFloat(val);
+
+    document.getElementById("volumeValue").textContent =
+        Math.round(masterVolume * 100) + "%";
+
+    applyVolume();
 }</script>
