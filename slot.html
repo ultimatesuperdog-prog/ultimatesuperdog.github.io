@@ -679,10 +679,6 @@ LuckyLv：
 転生回数：
 <span id="rebirthCount">0</span>
 </p>
-<p>
-転生ボーナス：
-<span id="rebirthBonus">未解放</span>
-</p>
 
 </div>
 <div class="result">
@@ -741,36 +737,119 @@ onclick="resetData()">
         <h2><img src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif" style="width:24px;">このゲームについて</h2>
 
 <p>
-レバーを引いて3つ揃えよう！
+レバーを引いてパロットを揃えよう！
 </p>
 
 <hr>
 
-<h3>基本ルール</h3>
+<h3>遊び方</h3>
+
+<ol>
+<li>レバーを引く</li>
+<li>3つのリールを止める</li>
+<li>リーチやWINでSPを獲得する</li>
+<li>SPでスキルを購入する</li>
+<li>図鑑と加護を集める</li>
+<li>より高効率を目指す</li>
+</ol>
+
+<hr>
+
+<h3>SPについて</h3>
+
+<p>
+SPはこのゲームの成長資源です。
+</p>
 
 <ul>
-<li>リーチでSP獲得</li>
-<li>WINでSP獲得</li>
-<li>SPでスキルを購入</li>
+<li>リーチ：+1SP</li>
+<li>WIN：+3SP</li>
+<li>シーズン終了時：ボーナスSP</li>
+<li>実績解除：報酬SP</li>
 </ul>
 
 <hr>
 
-<h3>スキル</h3>
+<h3>図鑑</h3>
 
-<ul>
-<li>自動停止解放</li>
-<li>速度UP</li>
-<li>LuckyParrot</li>
-</ul>
+<p>
+パロットにはレアリティがあります。
+</p>
 
+<p>
+初めて発見した組み合わせは図鑑に登録されます。
+</p>
+
+<p>
+全42種類のコンプリートを目指しましょう。
+</p>
+
+<hr>
+
+<h3>加護</h3>
+
+<p>
+同じパロット・同じレアリティでWINすると加護を獲得できます。
+</p>
+
+<p>
+加護は永続でリーチ率を上昇させます。
+</p>
+
+<p>
+高レアリティほど強力です。
+</p>
+
+<hr>
+
+<h3>シーズン</h3>
+
+<p>
+100回転で1シーズンです。
+</p>
+
+<p>
+シーズン終了時にWIN数に応じたSPボーナスを獲得します。
+</p>
+
+<hr>
+
+<h3>転生</h3>
+
+<p>
+一定回転数に到達すると転生できます。
+</p>
+
+<p>
+特典はとあるスキルの強化が入ります。
+</p>
+
+<p>
+転生すると進行状況の大部分を失います。
+</p>
+
+<p>
+ただし図鑑と加護は引き継がれます。
+</p>
+
+<p>
+より効率よく成長し、
+さらなる転生を目指しましょう。
+</p>
 <hr>
 
 <h3>目標</h3>
 
 <p>
-まずは速度Lv10とLuckyLv5を目指そう！
+まずは
+「自動停止」
+・
+「速度Lv10」
+・
+「LuckyLv5」
+を目指しましょう。
 </p>
+
 
 <div id="howtoUnlocks"></div>
 
@@ -1363,7 +1442,7 @@ function rebutton(){
     luckySeasonCounter++;
 
     if(
-        luckySeasonCounter >= 10
+        luckySeasonCounter >= (10 - rebirthCount)
     ){
 
         luckySeasonCounter = 0;
@@ -1411,7 +1490,7 @@ document.querySelectorAll('.slide3').forEach(function(slide) {
 function updateCount(){
 
     let luckyRate =
-    (luckyLevel + rebirthCount * 0.2) * 0.05;
+    luckyLevel  * 0.05;
 
     let ravg =
     100 / img.length +
@@ -2027,7 +2106,7 @@ document.getElementById(
 "exceedBuyBtn"
 );
 
-if(luckySeasonUnlock){
+if(luckySeasonUnlock && bankUnlock){
 
     exceedBuyBtn.style.display =
     "block";
@@ -2102,23 +2181,6 @@ if(rebirthBtn){
         rebirthBtn.disabled = true;
     }
 }
-let rebirthBonusText = "未解放";
-
-if(rebirthCount >= 10){
-    rebirthBonusText = "EX解放";
-}
-else if(rebirthCount >= 5){
-    rebirthBonusText = "スキル枠解放";
-}
-else if(rebirthCount >= 3){
-    rebirthBonusText = "Lucky強化";
-}
-else if(rebirthCount >= 1){
-    rebirthBonusText = "加護強化";
-}
-
-document.getElementById("rebirthBonus").textContent =
-rebirthBonusText;
 
 updateHowTo();
 }
@@ -2457,9 +2519,6 @@ function getReachBonus(){
         }
     }
 
-    // ★転生ボーナス追加
-    totalBonus *= (1 + rebirthCount * 0.1);
-
     return totalBonus;
 }
 
@@ -2676,69 +2735,87 @@ function updateHowTo(){
     ){
 
         html += `
-        <hr>
+<hr>
 
-        <h3>貯金箱</h3>
+<h3>貯金箱</h3>
 
-        <p>
-        獲得SPが自動で貯金されます。
-        </p>
+<p>
+獲得したSPを自動で貯金します。
+</p>
 
-        <p>
-        現在停止中の絵柄によって
-        倍率が変化します。
-        </p>
-        `;
+<p>
+引き出す時の停止”レアリティ”によって
+受取倍率が変化します。
+</p>
+
+<p>
+高レアリティを狙って
+大量のSPを獲得しましょう。
+</p>
+`;
     }
 
     if(bankUnlock){
 
         html += `
-        <hr>
+<hr>
 
-        <h3>リーチ停止無効化</h3>
+<h3>リーチ停止無効化</h3>
 
-        <p>
-        リーチしても自動モードが
-        停止しなくなります。
-        </p>
+<p>
+自動モード中にリーチしても停止しなくなります。
+</p>
 
-        <p>
-        シーズン通知も簡略化されます。
-        </p>
-        `;
+<p>
+完全放置プレイが可能になります。
+</p>
+`;
     }
 
     if(noReachStop){
 
     html += `
-    <hr>
+<hr>
 
-    <h3>Lucky Season</h3>
+<h3>Lucky Season</h3>
 
-    <p>
-    10回転に1回、
-    レアリティ抽選が強化されます。
-    </p>
-    `;
+<p>
+一定回数(10回 - ””転生回数””)ごとに発生する特別シーズンです。
+</p>
+
+<p>
+高レアリティの出現率が大幅に上昇します。
+</p>
+
+<p>
+図鑑埋めや加護集めの大チャンスです。
+</p>
+`;
 }
 
     if(luckySeasonUnlock){
-
         html += `
-        <hr>
+<hr>
 
-        <h3>Exceed!!</h3>
+<h3>ExceedMode</h3>
 
-        <p>
-        長押し中、
-        SPを消費して超高速回転をします。
-        </p>
+<p>
+SPを消費して限界突破します。
+</p>
 
-        <p>
-        消費：8SP/秒
-        </p>
-        `;
+<p>
+押している間は超高速回転になります。
+</p>
+
+<p>
+大量のSPを短時間で回転数へ変換できます。
+</p>
+
+<p>
+消費：8SP/秒
+</p>
+`;
+        
     }
 
     document.getElementById(
@@ -2856,11 +2933,10 @@ function rebirth(){
 
     setTimeout(() => {
 
-        rebirthCount++;
-        skillPoint += 50 * rebirthCount;
-        addLog("転生ボーナスSP +" + (50 * rebirthCount));
 
         // === リセット処理 ===
+        rebirthCount++;
+
         skillPoint = 0;
 
         seasonCount = 0;
