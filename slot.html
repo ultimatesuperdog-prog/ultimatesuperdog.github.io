@@ -1677,7 +1677,7 @@ function getAutoSpeed(){
 
     let speed =
     2000 -
-    speedLevel * 10;
+    speedLevel * 100;
     return speed;
 }
 
@@ -2730,7 +2730,7 @@ setInterval(function(){
         ){
 
             skillPoint -= 1;
-            speedLevel = 14;
+            speedLevel =  15+rebirthCount;
 
         }else{
 
