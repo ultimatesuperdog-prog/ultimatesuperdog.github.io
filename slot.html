@@ -1663,26 +1663,21 @@ function startAutoLoop(){
                 autoLoopTimer =
                 setTimeout(
                     startAutoLoop,
-                    speed * 0.25
+                    speed
                 );
 
-            }, speed * 0.25);
+            }, speed);
 
-        }, speed * 0.25);
+        }, speed);
 
-    }, speed * 0.25);
+    }, speed);
 }
 
 function getAutoSpeed(){
 
     let speed =
-    5000 -
-    speedLevel * 350;
-
-    if(speed < 500){
-        speed = 500;
-    }
-
+    2000 -
+    speedLevel * 10;
     return speed;
 }
 
@@ -2703,7 +2698,7 @@ function startExceed(){
     }
 
     exceedMode = true;
-    speedLevel = 14;
+    speedLevel = 15+rebirthCount;
 
     document
     .getElementById("exceedOverlay")
@@ -3022,7 +3017,11 @@ function rebirth(){
 
         // 重要：図鑑のみ保持
         // collection / winCollection は残す
-
+for(const ach of achievementsData){
+    if(achievements.includes(ach.id)){
+        skillPoint += ach.reward;
+    }
+}
         addLog("転生が完了した");
 
         updateRPGUI();
