@@ -1677,7 +1677,7 @@ function getAutoSpeed(){
 
     let speed =
     2000 -
-    speedLevel * 100;
+    speedLevel * 150;
     return speed;
 }
 
@@ -2698,7 +2698,7 @@ function startExceed(){
     }
 
     exceedMode = true;
-    speedLevel = 15+rebirthCount;
+    speedLevel = 13.3;
 
     document
     .getElementById("exceedOverlay")
@@ -2730,7 +2730,7 @@ setInterval(function(){
         ){
 
             skillPoint -= 1;
-            speedLevel =  15+rebirthCount;
+            speedLevel = 13.3;
 
         }else{
 
