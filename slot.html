@@ -1308,7 +1308,7 @@ if(slot1 == slot2){
 
         addSP(1);
 
-        if(!exceedMode){
+        if(!exceedMode && canPlayEffect()){
 
     document.body.style.backgroundImage =
     "url('https://pipoya.net/sozai/wp-content/uploads/2018/07/pipo-btleffect149b_sample.gif')";
@@ -1391,23 +1391,13 @@ function button3(){
 
             if(canPlayEffect()){
 
-            const overlay =
-            document.getElementById(
-            'flash-overlay'
-            );
-
+            const overlay =document.getElementById('flash-overlay');
             overlay.className='';
 
             setTimeout(
-            ()=>{
-                overlay.className=
-                'flash-active';
-            },
-            10
-            );
-    document.body.style.backgroundImage =
-    "url('partyparrot.gif')";
-}
+            ()=>{overlay.className='flash-active';},10);
+                document.body.style.backgroundImage ="url('partyparrot.gif')";
+            }
         }
     }
 
@@ -1444,17 +1434,15 @@ function button3(){
         if(rarity1 == rarity2 && rarity2 == rarity3){
         addWinCollection( slot1,rarity1);
     }
-        const overlay =
-        document.getElementById(
-        'flash-overlay'
-        );
+            if(canPlayEffect()){
 
-        overlay.className = '';
+            const overlay =document.getElementById('flash-overlay');
+            overlay.className='';
 
-        setTimeout(() => {
-            overlay.className =
-            'flash-active';
-        }, 10);
+            setTimeout(
+            ()=>{overlay.className='flash-active';},10);
+                document.body.style.backgroundImage ="url('partyparrot.gif')";
+            }
 
 if(noReachStop){
         addLog("勝利はあなたの手に...");
