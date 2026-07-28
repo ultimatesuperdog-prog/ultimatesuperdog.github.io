@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="tekito-na.css" rel="stylesheet" />
+<title>この中から1羽選ぶのじゃ(笑)</title>
+</head>
+<body>
+<p class="gaming"><b>騙されたなぁwwwwww<br>m9(^Д^)ﾌﾟｷﾞｬｰ</b></p>
+<a href="https://ultimatesuperdog-prog.github.io/ultimatesuperdog.github.io/HPage.html">
+<img class="logo" id="logo1" src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif">
+</a>
+<a href="https://ultimatesuperdog-prog.github.io/ultimatesuperdog.github.io/slot.html">
+<img class="logo" id="logo2" src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif">
+</a>
+<a href="">
+<img class="logo" id="logo3" src="https://cultofthepartyparrot.com/parrots/hd/parrot.gif">
+</a>
+
+
+<script>
+  const logos = [
+    { el: document.getElementById("logo1"), x: 50,  y: 50,  vx: 5, vy: 8 },
+    { el: document.getElementById("logo2"), x: 200, y: 150, vx: -6, vy: 5 },
+    { el: document.getElementById("logo3"), x: 400, y: 300, vx: 7, vy: -5 }
+  ];
+
+  function animate() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    logos.forEach(obj => {
+      obj.x += obj.vx;
+      obj.y += obj.vy;
+
+      const lw = obj.el.clientWidth;
+      const lh = obj.el.clientHeight;
+
+      // 壁に当たったら反射
+      if (obj.x <= 0 || obj.x + lw >= w) obj.vx *= -1;
+      if (obj.y <= 0 || obj.y + lh >= h) obj.vy *= -1;
+
+      obj.el.style.left = obj.x + "px";
+      obj.el.style.top  = obj.y + "px";
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+</script>
+
+</body>
+</html>
