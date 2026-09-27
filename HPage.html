@@ -1,133 +1,520 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<title>......♡</title>
+  <meta charset="UTF-8">
 
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #050508;
-    color: #ddd;
-    font-family: "Yu Gothic", sans-serif;
-  }
+  <!-- スマホ対応 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  p {
-    text-align: center;
-    padding: 20px 0;
-    font-size: 32px;
-    letter-spacing: 4px;
-    color: #cfcfcf;
-    text-shadow: 0 0 10px #8800ff;
-  }
+  <title>......♡</title>
 
-  .gallery {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto 50px auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  /* ▼ 画像サイズを完全統一する枠 ▼ */
-  .photo-box {
-    position: relative;
-    width: 100%;
-    height: 260px; /* ← ここで高さを統一 */
-    overflow: hidden;
-    border: 2px solid #222;
-    background: #000;
-    box-shadow: 0 0 15px rgba(120, 0, 255, 0.4);
-    transition: 0.3s;
-  }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #050508;
+      color: #ddd;
+      font-family: "Yu Gothic", sans-serif;
+    }
 
-  .photo-box:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 25px rgba(180, 0, 255, 0.7);
-  }
+    p {
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 32px;
+      letter-spacing: 4px;
+      color: #cfcfcf;
+      text-shadow: 0 0 10px #8800ff;
+    }
 
-  /* ▼ 画像を枠にフィットさせる（比率維持） ▼ */
-  .photo-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ← これで統一サイズに収まる */
-    filter: brightness(70%) contrast(120%) saturate(130%);
-    transition: 0.4s;
-  }
+    /* =========================
+       ギャラリー
+    ========================= */
 
-  .photo-box:hover img {
-    filter: brightness(100%) contrast(140%) saturate(150%);
-  }
+    .gallery {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 50px;
+      display: grid;
 
-  .caption {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 8px 0;
-    background: rgba(0, 0, 0, 0.6);
-    color: #ccc;
-    font-size: 14px;
-    text-align: center;
-    letter-spacing: 2px;
-    opacity: 0;
-    transition: 0.4s;
-  }
+      grid-template-columns:
+        repeat(auto-fill, minmax(260px, 1fr));
 
-  .photo-box:hover .caption {
-    opacity: 1;
-  }
-</style>
+      gap: 20px;
+    }
+
+    .photo-box {
+      position: relative;
+      width: 100%;
+      height: 260px;
+
+      overflow: hidden;
+
+      border: 2px solid #222;
+      background: #000;
+
+      box-shadow:
+        0 0 15px rgba(120, 0, 255, 0.4);
+
+      transition: 0.3s;
+
+      cursor: pointer;
+    }
+
+    .photo-box:hover {
+      transform: scale(1.03);
+
+      box-shadow:
+        0 0 25px rgba(180, 0, 255, 0.7);
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      filter:
+        brightness(70%)
+        contrast(120%)
+        saturate(130%);
+
+      transition: 0.4s;
+    }
+
+    .photo-box:hover img {
+      filter:
+        brightness(100%)
+        contrast(140%)
+        saturate(150%);
+    }
+
+    .caption {
+      position: absolute;
+
+      bottom: 0;
+      left: 0;
+
+      width: 100%;
+
+      padding: 8px 0;
+
+      background:
+        rgba(0, 0, 0, 0.6);
+
+      color: #ccc;
+
+      font-size: 14px;
+
+      text-align: center;
+
+      letter-spacing: 2px;
+
+      opacity: 0;
+
+      transition: 0.4s;
+
+      pointer-events: none;
+    }
+
+    .photo-box:hover .caption {
+      opacity: 1;
+    }
+
+
+    /* =========================
+       画像拡大
+    ========================= */
+
+    .lightbox {
+      display: none;
+
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 9999;
+
+      background:
+        rgba(0, 0, 0, 0.92);
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img {
+      display: block;
+
+      max-width: 95vw;
+      max-height: 90vh;
+
+      width: auto;
+      height: auto;
+
+      object-fit: contain;
+
+      border-radius: 5px;
+
+      box-shadow:
+        0 0 35px rgba(150, 0, 255, 0.7);
+    }
+
+
+    /* =========================
+       × ボタン
+    ========================= */
+
+    .lightbox-close {
+      position: fixed;
+
+      top: 15px;
+      right: 20px;
+
+      width: 50px;
+      height: 50px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+
+      background:
+        rgba(0, 0, 0, 0.6);
+
+      border-radius: 50%;
+
+      font-size: 40px;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      user-select: none;
+
+      z-index: 10000;
+    }
+
+    .lightbox-close:hover {
+      background:
+        rgba(140, 0, 255, 0.8);
+    }
+
+
+    /* =========================
+       スマホ
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      p {
+        font-size: 20px;
+
+        letter-spacing: 3px;
+
+        padding: 15px 5px;
+      }
+
+      .gallery {
+        width: 94%;
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        gap: 10px;
+      }
+
+      .photo-box {
+        height: 180px;
+      }
+
+      .photo-box:hover {
+        transform: none;
+      }
+
+      .caption {
+        opacity: 1;
+
+        font-size: 11px;
+      }
+
+      .lightbox {
+        padding: 10px;
+      }
+
+      .lightbox img {
+        max-width: 96vw;
+        max-height: 90vh;
+      }
+
+      .lightbox-close {
+        top: 10px;
+        right: 10px;
+
+        width: 48px;
+        height: 48px;
+
+        font-size: 38px;
+      }
+    }
+
+  </style>
 
 </head>
+
+
 <body>
+
+
 <p>だれにもいわないでね</p>
+
+
+<!-- ギャラリー -->
+
+<div
+  class="gallery"
+  id="gallery">
+</div>
+
+
+<!-- 拡大表示 -->
+
+<div
+  class="lightbox"
+  id="lightbox">
+
+  <div
+    class="lightbox-close"
+    id="lightboxClose">
+    ×
+  </div>
+
   
-<div class="gallery" id="gallery"></div>
+
+</div>
+
+
 
 <script>
+
+  /* =========================
+     画像一覧
+  ========================= */
+
   const photos = [
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283118317.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283111198.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-10-06.847_1440x2560.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283091735.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283089537.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283072089.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283051789.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283038254.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282995077.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282979859.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282908448.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529967881.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282724989.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282716962.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/無題256_20260916075318.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789336046238.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529847104.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1790221147282.jpg",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-11_23-34-38.701_1080x1920.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-15-42.350_2560x1440.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-27_21-29-39.915_1920x1080.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-01-09_06-52-16.327_2560x1440.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-12-20_07-16-52.243_2560x1440.png",
+
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282709592.jpg"
+
   ];
 
-  const gallery = document.getElementById("gallery");
+
+  /* =========================
+     要素取得
+  ========================= */
+
+  const gallery =
+    document.getElementById("gallery");
+
+  const lightbox =
+    document.getElementById("lightbox");
+
+  const lightboxImage =
+    document.getElementById("lightboxImage");
+
+  const lightboxClose =
+    document.getElementById("lightboxClose");
+
+
+  /* =========================
+     写真生成
+  ========================= */
 
   photos.forEach((url, i) => {
-    const box = document.createElement("div");
+
+    const box =
+      document.createElement("div");
+
     box.className = "photo-box";
 
-    box.innerHTML = `
-      <img src="${url}">
-      <div class="caption">Photo ${i + 1}</div>
-    `;
+
+    const img =
+      document.createElement("img");
+
+    img.src = url;
+
+    img.alt =
+      "Photo " + (i + 1);
+
+    img.loading = "lazy";
+
+
+    const caption =
+      document.createElement("div");
+
+    caption.className =
+      "caption";
+
+    caption.textContent =
+      "Photo " + (i + 1);
+
+
+    box.appendChild(img);
+
+    box.appendChild(caption);
+
+
+    /* 画像クリック */
+
+    box.addEventListener(
+      "click",
+      function () {
+
+        lightboxImage.src = url;
+
+        lightbox.classList.add(
+          "active"
+        );
+
+        document.body.style.overflow =
+          "hidden";
+
+      }
+    );
+
 
     gallery.appendChild(box);
+
   });
+
+
+  /* =========================
+     閉じる
+  ========================= */
+
+  function closeLightbox() {
+
+    lightbox.classList.remove(
+      "active"
+    );
+
+    lightboxImage.src = "";
+
+    document.body.style.overflow = "";
+
+  }
+
+
+  /* × ボタン */
+
+  lightboxClose.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+      closeLightbox();
+
+    }
+  );
+
+
+  /* 画像以外をクリック */
+
+  lightbox.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        event.target === lightbox
+      ) {
+
+        closeLightbox();
+
+      }
+
+    }
+  );
+
+
+  /* ESCキーでも閉じる */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        closeLightbox();
+
+      }
+
+    }
+  );
+
 </script>
+
 
 </body>
 </html>
