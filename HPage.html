@@ -273,248 +273,116 @@
     }
 
   </style>
-
 </head>
 
-
 <body>
-
-
 <p>だれにもいわないでね</p>
 
-
-<!-- ギャラリー -->
-
-<div
-  class="gallery"
-  id="gallery">
-</div>
-
-
-<!-- 拡大表示 -->
-
-<div
-  class="lightbox"
-  id="lightbox">
-
-  <div
-    class="lightbox-close"
-    id="lightboxClose">
+<div class="gallery" id="gallery"></div>
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightboxClose">
     ×
   </div>
-
-  
-
+  <img id="lightboxImage" src="" alt="拡大画像">
 </div>
-
-
-
 <script>
-
-  /* =========================
-     画像一覧
-  ========================= */
-
   const photos = [
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283118317.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283111198.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-10-06.847_1440x2560.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283091735.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283089537.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283072089.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283051789.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283038254.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282995077.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282979859.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282908448.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529967881.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282724989.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282716962.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/無題256_20260916075318.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789336046238.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529847104.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1790221147282.jpg",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-11_23-34-38.701_1080x1920.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-15-42.350_2560x1440.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-27_21-29-39.915_1920x1080.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-01-09_06-52-16.327_2560x1440.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-12-20_07-16-52.243_2560x1440.png",
-
     "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282709592.jpg"
 
   ];
 
-
-  /* =========================
-     要素取得
-  ========================= */
-
-  const gallery =
-    document.getElementById("gallery");
-
-  const lightbox =
-    document.getElementById("lightbox");
-
-  const lightboxImage =
-    document.getElementById("lightboxImage");
-
-  const lightboxClose =
-    document.getElementById("lightboxClose");
-
-
-  /* =========================
-     写真生成
-  ========================= */
+  const gallery = document.getElementById("gallery");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImage = document.getElementById("lightboxImage");
+  const lightboxClose = document.getElementById("lightboxClose");
 
   photos.forEach((url, i) => {
-
-    const box =
-      document.createElement("div");
-
+    const box = document.createElement("div");
     box.className = "photo-box";
-
-
-    const img =
-      document.createElement("img");
-
+    const img = document.createElement("img");
     img.src = url;
-
-    img.alt =
-      "Photo " + (i + 1);
-
+    img.alt = "Photo " + (i + 1);
     img.loading = "lazy";
+    const caption = document.createElement("div");
 
-
-    const caption =
-      document.createElement("div");
-
-    caption.className =
-      "caption";
-
-    caption.textContent =
-      "Photo " + (i + 1);
-
-
+    caption.className = "caption";
+    caption.textContent = "Photo " + (i + 1);
     box.appendChild(img);
-
     box.appendChild(caption);
-
-
-    /* 画像クリック */
-
     box.addEventListener(
       "click",
       function () {
-
         lightboxImage.src = url;
-
         lightbox.classList.add(
           "active"
         );
-
         document.body.style.overflow =
           "hidden";
-
       }
     );
-
-
     gallery.appendChild(box);
-
   });
 
-
-  /* =========================
-     閉じる
-  ========================= */
-
   function closeLightbox() {
-
     lightbox.classList.remove(
       "active"
     );
-
     lightboxImage.src = "";
-
     document.body.style.overflow = "";
-
   }
-
-
   /* × ボタン */
-
   lightboxClose.addEventListener(
     "click",
     function (event) {
-
       event.stopPropagation();
-
       closeLightbox();
-
     }
   );
-
-
   /* 画像以外をクリック */
-
   lightbox.addEventListener(
     "click",
     function (event) {
-
       if (
         event.target === lightbox
       ) {
-
         closeLightbox();
-
       }
-
     }
   );
-
-
   /* ESCキーでも閉じる */
-
   document.addEventListener(
     "keydown",
     function (event) {
-
       if (
         event.key === "Escape"
       ) {
-
         closeLightbox();
-
       }
-
     }
   );
-
 </script>
-
-
 </body>
 </html>
