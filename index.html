@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Session Analysis</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0d1117;
+    color:#e6edf3;
+    font-family:Consolas, Monaco, monospace;
+    display:flex;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+}
+
+.header{
+    margin-bottom:30px;
+}
+
+.header h1{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#8b949e;
+}
+
+.progress{
+    width:100%;
+    height:8px;
+    background:#21262d;
+    border-radius:999px;
+    overflow:hidden;
+    margin:25px 0;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#238636;
+    transition:0.4s;
+}
+
+.terminal{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:10px;
+    padding:20px;
+    min-height:220px;
+    line-height:1.8;
+    white-space:pre-wrap;
+    margin-bottom:25px;
+}
+
+.report{
+    display:none;
+    border:1px solid #30363d;
+    background:#161b22;
+    border-radius:10px;
+    padding:25px;
+}
+
+.section-title{
+    color:#58a6ff;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    gap:14px;
+}
+
+.label{
+    color:#8b949e;
+}
+
+.value{
+    color:#e6edf3;
+}
+
+.status{
+    color:#3fb950;
+}
+
+.footer{
+    margin-top:25px;
+    font-size:13px;
+    color:#8b949e;
+    line-height:1.8;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h1>I'm stealing all your data right now. Sucks to be you lol🤣</h1>
+    <p>Secure Session Analysis...</p>
+</div>
+
+<div class="progress">
+    <div class="progress-bar" id="bar"></div>
+</div>
+
+<div class="terminal" id="terminal"></div>
+
+<div class="report" id="report">
+    <div class="section-title">
+        SESSION REPORT
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">
+        Report generated successfully.<br>
+        Environment profile validated.<br>
+        Session integrity check completed.
+    </div>
+</div>
+
+</div>
+
+<script>
+
+const terminal = document.getElementById("terminal");
+const report = document.getElementById("report");
+const grid = document.getElementById("grid");
+const bar = document.getElementById("bar");
+
+function wait(ms){
+    return new Promise(r => setTimeout(r, ms));
+}
+
+function log(text){
+    terminal.textContent += text + "\n";
+}
+
+function generateId(length){
+
+    const chars = "ABCDEF0123456789";
+
+    let result = "";
+
+    for(let i=0;i<length;i++){
+        result += chars[Math.floor(Math.random()*chars.length)];
+    }
+
+    return result;
+}
+
+async function run(){
+
+    const steps = [
+        "Initializing secure session...",
+        "Collecting browser metrics...",
+        "Inspecting rendering capabilities...",
+        "Evaluating hardware profile...",
+        "Analyzing network characteristics...",
+        "Generating browser fingerprint...",
+        "Building environment profile...",
+        "Calculating risk indicators...",
+        "Validating session integrity...",
+        "Generating final report..."
+    ];
+for(let i=0;i<steps.length;i++){
+
+    log("[OK] " + steps[i]);
+
+    bar.style.width =
+        ((i + 1) / steps.length * 100) + "%";
+
+    let delay;
+
+    if(i < 3){
+        delay = 1200 + Math.random() * 800;
+    }
+    else if(i < 7){
+        delay = 1800 + Math.random() * 1200;
+    }
+    else{
+        delay = 2500 + Math.random() * 2000;
+    }
+
+    await wait(delay);
+}
+
+
+    let ip = "Unavailable";
+
+    try{
+        const response =
+            await fetch("https://api.ipify.org?format=json");
+
+        const data = await response.json();
+
+        ip = data.ip;
+    }
+    catch(e){}
+
+    const memory =
+        navigator.deviceMemory
+            ? navigator.deviceMemory + " GB"
+            : "Not Available";
+
+    const connection =
+        navigator.connection?.effectiveType ||
+        "Unknown";
+
+    const device =
+        /Android|iPhone|iPad|iPod|Mobile/i
+            .test(navigator.userAgent)
+            ? "Mobile Device"
+            : "Desktop Device";
+
+    const timezone =
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const browser =
+        navigator.userAgent;
+
+    const reportData = [
+
+        ["IP ADDRESS", ip],
+
+        ["DEVICE TYPE", device],
+
+        ["DISPLAY RESOLUTION",
+            screen.width +
+            " × " +
+            screen.height],
+
+        ["TIME ZONE", timezone],
+
+        ["CPU THREADS",
+            navigator.hardwareConcurrency ||
+            "Unknown"],
+
+        ["MEMORY PROFILE",
+            memory],
+
+        ["NETWORK PROFILE",
+            connection.toUpperCase()],
+
+        ["BROWSER FINGERPRINT",
+            generateId(12)],
+
+        ["SESSION TOKEN",
+            generateId(16)],
+
+        ["ENVIRONMENT SCORE",
+            (85 + Math.floor(Math.random()*15))
+            + "/100"],
+
+        ["PRIVACY SCORE",
+            ["Low","Medium","Balanced"]
+            [Math.floor(Math.random()*3)]],
+
+        ["SESSION STATUS",
+            "Active"],
+
+        ["PROFILE VALIDATION",
+            "Completed"],
+
+        ["METADATA ANALYSIS",
+            "Completed"]
+    ];
+
+    reportData.forEach(item=>{
+
+        const label =
+            document.createElement("div");
+
+        label.className = "label";
+        label.textContent = item[0];
+
+        const value =
+            document.createElement("div");
+
+        value.className =
+            item[1] === "Active" ||
+            item[1] === "Completed"
+            ? "status"
+            : "value";
+
+        value.textContent = item[1];
+
+        grid.appendChild(label);
+        grid.appendChild(value);
+    });
+
+    report.style.display = "block";
+}
+
+run();
+
+</script>
+
+</body>
+</html>
