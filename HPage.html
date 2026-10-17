@@ -1,419 +1,674 @@
 <!DOCTYPE html>
-<html lang="ja">
-
+<html>
 <head>
-  <meta charset="UTF-8">
+                <style>*{
+    box-sizing:border-box;
+}
 
-  <!-- スマホ対応 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+body{
+    margin:0;
+    background:#050508;
+    color:#ddd;
+    font-family:"Yu Gothic",sans-serif;
+}
 
-  <title>......♡</title>
+p{
+    text-align:center;
+    padding:20px 10px;
+    font-size:32px;
+    letter-spacing:4px;
+    color:#cfcfcf;
+    text-shadow:0 0 10px #8800ff;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+.gallery{
+    width:90%;
+    max-width:1200px;
+    margin:0 auto 50px;
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: #050508;
-      color: #ddd;
-      font-family: "Yu Gothic", sans-serif;
-    }
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(260px,1fr));
 
-    p {
-      text-align: center;
-      padding: 20px 10px;
-      font-size: 32px;
-      letter-spacing: 4px;
-      color: #cfcfcf;
-      text-shadow: 0 0 10px #8800ff;
-    }
+    gap:20px;
+}
 
-    /* =========================
-       ギャラリー
-    ========================= */
+.photo-box{
+    position:relative;
+    height:260px;
 
-    .gallery {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto 50px;
-      display: grid;
+    overflow:hidden;
 
-      grid-template-columns:
-        repeat(auto-fill, minmax(260px, 1fr));
+    border:2px solid #222;
+    background:#000;
 
-      gap: 20px;
-    }
+    cursor:pointer;
 
-    .photo-box {
-      position: relative;
-      width: 100%;
-      height: 260px;
+    box-shadow:
+        0 0 15px rgba(120,0,255,.4);
 
-      overflow: hidden;
+    transition:.3s;
+}
 
-      border: 2px solid #222;
-      background: #000;
+.photo-box:hover{
+    transform:scale(1.03);
 
-      box-shadow:
-        0 0 15px rgba(120, 0, 255, 0.4);
+    box-shadow:
+        0 0 25px rgba(180,0,255,.7);
+}
 
-      transition: 0.3s;
+.photo-box img{
+    width:100%;
+    height:100%;
 
-      cursor: pointer;
-    }
+    object-fit:cover;
 
-    .photo-box:hover {
-      transform: scale(1.03);
-
-      box-shadow:
-        0 0 25px rgba(180, 0, 255, 0.7);
-    }
-
-    .photo-box img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-      filter:
+    filter:
         brightness(70%)
         contrast(120%)
         saturate(130%);
 
-      transition: 0.4s;
-    }
+    transition:.4s;
+}
 
-    .photo-box:hover img {
-      filter:
+.photo-box:hover img{
+    filter:
         brightness(100%)
         contrast(140%)
         saturate(150%);
-    }
-
-    .caption {
-      position: absolute;
-
-      bottom: 0;
-      left: 0;
-
-      width: 100%;
-
-      padding: 8px 0;
-
-      background:
-        rgba(0, 0, 0, 0.6);
-
-      color: #ccc;
-
-      font-size: 14px;
-
-      text-align: center;
-
-      letter-spacing: 2px;
-
-      opacity: 0;
-
-      transition: 0.4s;
-
-      pointer-events: none;
-    }
-
-    .photo-box:hover .caption {
-      opacity: 1;
-    }
-
-
-    /* =========================
-       画像拡大
-    ========================= */
-
-    .lightbox {
-      display: none;
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      z-index: 9999;
-
-      background:
-        rgba(0, 0, 0, 0.92);
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-    }
-
-    .lightbox.active {
-      display: flex;
-    }
-
-    .lightbox img {
-      display: block;
-
-      max-width: 95vw;
-      max-height: 90vh;
-
-      width: auto;
-      height: auto;
-
-      object-fit: contain;
-
-      border-radius: 5px;
-
-      box-shadow:
-        0 0 35px rgba(150, 0, 255, 0.7);
-    }
-
-
-    /* =========================
-       × ボタン
-    ========================= */
-
-    .lightbox-close {
-      position: fixed;
-
-      top: 15px;
-      right: 20px;
-
-      width: 50px;
-      height: 50px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: white;
-
-      background:
-        rgba(0, 0, 0, 0.6);
-
-      border-radius: 50%;
-
-      font-size: 40px;
-
-      line-height: 1;
-
-      cursor: pointer;
-
-      user-select: none;
-
-      z-index: 10000;
-    }
-
-    .lightbox-close:hover {
-      background:
-        rgba(140, 0, 255, 0.8);
-    }
-
-
-    /* =========================
-       スマホ
-    ========================= */
-
-    @media (max-width: 600px) {
-
-      p {
-        font-size: 20px;
-
-        letter-spacing: 3px;
-
-        padding: 15px 5px;
-      }
-
-      .gallery {
-        width: 94%;
-
-        grid-template-columns:
-          repeat(2, 1fr);
-
-        gap: 10px;
-      }
-
-      .photo-box {
-        height: 180px;
-      }
-
-      .photo-box:hover {
-        transform: none;
-      }
-
-      .caption {
-        opacity: 1;
-
-        font-size: 11px;
-      }
-
-      .lightbox {
-        padding: 10px;
-      }
-
-      .lightbox img {
-        max-width: 96vw;
-        max-height: 90vh;
-      }
-
-      .lightbox-close {
-        top: 10px;
-        right: 10px;
-
-        width: 48px;
-        height: 48px;
-
-        font-size: 38px;
-      }
-    }
-.lightbox {
-  opacity: 0;
-  visibility: hidden;
-  display: flex;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.92);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.lightbox.active {
-  opacity: 1;
-  visibility: visible;
+.caption{
+    position:absolute;
+    left:0;
+    bottom:0;
+
+    width:100%;
+    padding:8px;
+
+    background:rgba(0,0,0,.6);
+
+    text-align:center;
+    font-size:12px;
+
+    opacity:0;
+
+    transition:.3s;
 }
 
-.lightbox img {
-  max-width: 95vw;
-  max-height: 90vh;
-  object-fit: contain;
-  transform: scale(0.8);
-  opacity: 0;
-  transition: transform 0.35s cubic-bezier(.2,.8,.2,1), opacity 0.3s ease;
+.photo-box:hover .caption{
+    opacity:1;
 }
 
-.lightbox.active img {
-  transform: scale(1);
-  opacity: 1;
+.lightbox{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.95);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:9999;
 }
-  </style>
-</head>
 
-<body>
-<p>だれにもいわないでね</p>
+.lightbox.active{
+    opacity:1;
+    visibility:visible;
+}
 
-<div class="gallery" id="gallery"></div>
-<div class="lightbox" id="lightbox">
-  <div class="lightbox-close" id="lightboxClose">
-    ×
-  </div>
-  <img id="lightboxImage" src="" alt="拡大画像">
-</div>
-<script>
-  const photos = [
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283118317.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283111198.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-10-06.847_1440x2560.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283091735.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283089537.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283072089.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283051789.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785283038254.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282995077.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282979859.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282908448.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529967881.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282724989.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282716962.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/無題256_20260916075318.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789336046238.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1789529847104.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1790221147282.jpg",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-11_23-34-38.701_1080x1920.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-11-01_12-15-42.350_2560x1440.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-09-27_21-29-39.915_1920x1080.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2026-01-09_06-52-16.327_2560x1440.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/VRChat_2025-12-20_07-16-52.243_2560x1440.png",
-    "https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/refs/heads/main/photo/1785282709592.jpg"
+.lightbox img{
+    max-width:95vw;
+    max-height:90vh;
 
-  ];
+    object-fit:contain;
 
-  const gallery = document.getElementById("gallery");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const lightboxClose = document.getElementById("lightboxClose");
+    transform:scale(.9);
 
-  photos.forEach((url, i) => {
-    const box = document.createElement("div");
-    box.className = "photo-box";
-    const img = document.createElement("img");
-    img.src = url;
-    img.alt = "Photo " + (i + 1);
-    img.loading = "lazy";
-    const caption = document.createElement("div");
+    transition:.3s;
+}
 
-    caption.className = "caption";
-    caption.textContent = "Photo " + (i + 1);
-    box.appendChild(img);
-    box.appendChild(caption);
-    box.addEventListener(
-      "click",
-      function () {
-        lightboxImage.src = url;
-        lightbox.classList.add(
-          "active"
+.lightbox.active img{
+    transform:scale(1);
+}
+
+.lightbox-close{
+    position:fixed;
+
+    top:15px;
+    right:20px;
+
+    width:50px;
+    height:50px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:50%;
+
+    color:#fff;
+
+    font-size:40px;
+
+    background:rgba(0,0,0,.7);
+
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+    p{
+        font-size:20px;
+    }
+
+    .gallery{
+        width:95%;
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+
+    .photo-box{
+        height:180px;
+    }
+
+    .caption{
+        opacity:1;
+        font-size:10px;
+    }
+}
+.nav-btn{
+
+    position:fixed;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:60px;
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.7);
+
+    color:white;
+
+    font-size:32px;
+
+    cursor:pointer;
+
+    z-index:10000;
+
+    transition:.2s;
+}
+
+.nav-btn:hover{
+
+    background:rgba(140,0,255,.8);
+
+}
+
+.prev-btn{
+
+    left:20px;
+
+}
+
+.next-btn{
+
+    right:20px;
+
+}
+
+@media(max-width:600px){
+
+    .nav-btn{
+
+        width:50px;
+        height:50px;
+
+        font-size:24px;
+    }
+
+    .prev-btn{
+
+        left:10px;
+
+    }
+
+    .next-btn{
+
+        right:10px;
+
+    }
+
+}
+.slide-left{
+    animation:slideLeft .25s ease;
+}
+
+.slide-right{
+    animation:slideRight .25s ease;
+}
+
+@keyframes slideLeft{
+
+    from{
+        opacity:0;
+        transform:
+            translateX(60px)
+            scale(.95);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateX(0)
+            scale(1);
+    }
+
+}
+
+@keyframes slideRight{
+
+    from{
+        opacity:0;
+        transform:
+            translateX(-60px)
+            scale(.95);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateX(0)
+            scale(1);
+    }
+
+}
+from{
+    opacity:0;
+    filter:blur(8px);
+}
+to{
+    opacity:1;
+    filter:blur(0);
+}
+</style>
+            </head>
+            <body style="">
+                <script>(function installLiveweaveConsoleBridge() {
+        if (window.__liveweaveConsoleBridge) return;
+        window.__liveweaveConsoleBridge = true;
+
+        function format(value) {
+            if (typeof value === 'string') return value;
+            if (typeof value === 'undefined') return 'undefined';
+            if (typeof value === 'function') return value.toString();
+            if (value instanceof Error) return value.name + ': ' + value.message;
+            if (value instanceof Element) return value.outerHTML;
+            try {
+                var seen = [];
+                return JSON.stringify(value, function(key, item) {
+                    if (typeof item === 'object' && item !== null) {
+                        if (seen.indexOf(item) !== -1) return '[Circular]';
+                        seen.push(item);
+                    }
+                    return item;
+                }, 2);
+            } catch (err) {
+                return String(value);
+            }
+        }
+
+        function send(type, values, id) {
+            parent.postMessage({
+                source: 'liveweave-preview-console',
+                type: type,
+                id: id || '',
+                values: (values || []).map(format)
+            }, '*');
+        }
+
+        ['log', 'info', 'warn', 'error', 'debug'].forEach(function(level) {
+            var original = console[level];
+            console[level] = function() {
+                var args = Array.prototype.slice.call(arguments);
+                send(level === 'log' || level === 'debug' ? 'log' : level, args);
+                if (original) original.apply(console, args);
+            };
+        });
+
+        window.addEventListener('error', function(event) {
+            send('error', [event.message + (event.lineno ? ' (line ' + event.lineno + ')' : '')]);
+        });
+        window.addEventListener('unhandledrejection', function(event) {
+            send('error', ['Unhandled promise rejection:', event.reason]);
+        });
+        window.addEventListener('message', function(event) {
+            var message = event.data || {};
+            if (event.source !== parent || message.source !== 'liveweave-parent-console' || message.type !== 'evaluate') return;
+            try {
+                var result = (0, eval)(message.code);
+                Promise.resolve(result).then(function(value) {
+                    send('result', [value], message.id);
+                }, function(error) {
+                    send('error', [error], message.id);
+                });
+            } catch (error) {
+                send('error', [error], message.id);
+            }
+        });
+        send('ready', []);
+    })();</script>
+                <script>(function installPreviewLinkGuard() {
+        var noticeTimer;
+
+        function showNotice(message) {
+            var notice = document.getElementById('lw-preview-link-notice');
+            if (!notice) {
+                notice = document.createElement('div');
+                notice.id = 'lw-preview-link-notice';
+                notice.setAttribute('role', 'status');
+                notice.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:2147483647;max-width:calc(100% - 24px);padding:10px 14px;border-radius:9px;background:#17212d;color:#fff;font:13px/1.4 system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none;';
+                document.body.appendChild(notice);
+            }
+            notice.textContent = message;
+            notice.hidden = false;
+            clearTimeout(noticeTimer);
+            noticeTimer = setTimeout(function() { notice.hidden = true; }, 3500);
+        }
+
+        document.addEventListener('click', function(event) {
+            var link = event.target.closest && event.target.closest('a[href]');
+            if (!link || event.defaultPrevented) return;
+
+            var href = (link.getAttribute('href') || '').trim();
+            if (href.charAt(0) === '#') {
+                event.preventDefault();
+                var fragment = href.slice(1);
+                if (!fragment) {
+                    window.scrollTo(0, 0);
+                    return;
+                }
+                try { fragment = decodeURIComponent(fragment); } catch (error) {}
+                var target = document.getElementById(fragment) || document.getElementsByName(fragment)[0];
+                if (target) target.scrollIntoView();
+                return;
+            }
+
+            if (/^(https?:)?\/\//i.test(href)) {
+                event.preventDefault();
+                window.open(href, '_blank', 'noopener,noreferrer');
+                return;
+            }
+
+            if (/^(mailto:|tel:)/i.test(href)) return;
+
+            event.preventDefault();
+            showNotice('This page cannot be opened in the preview.');
+        }, true);
+    })();</script>
+                
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>......♡</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+
+    <p>だれにもいわないでね</p>
+
+    <div id="gallery" class="gallery"><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-17_11-07-17.950_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-17_11-07-17.950_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-16_22-03-40.039_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-16_22-03-40.039_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-16_21-46-38.148_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-16_21-46-38.148_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-16_00-26-08.349_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-16_00-26-08.349_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-16_00-17-12.755_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-16_00-17-12.755_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-16_00-07-16.340_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-16_00-07-16.340_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-14_23-59-23.703_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-14_23-59-23.703_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-11_21-49-54.751_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-11_21-49-54.751_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-11_14-43-48.416_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-11_14-43-48.416_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-10_14-32-17.605_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-10-10_14-32-17.605_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-10_14-26-05.627_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-10_14-26-05.627_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-10_00-58-09.548_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-10_00-58-09.548_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-10_00-52-44.420_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-10_00-52-44.420_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-10_00-46-45.713_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-10-10_00-46-45.713_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-09_06-20-03.616_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-10-09_06-20-03.616_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-09_06-18-10.232_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-10-09_06-18-10.232_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-09_06-16-35.450_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-10-09_06-16-35.450_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-10-09_06-13-49.045_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-10-09_06-13-49.045_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-23_10-15-39.114_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-09-23_10-15-39.114_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-23_09-59-18.088_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-09-23_09-59-18.088_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-11_23-42-38.360_1920x1080.png" loading="lazy"><div class="caption">VRChat_2026-09-11_23-42-38.360_1920x1080.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-11_23-41-42.427_1920x1080.png" loading="lazy"><div class="caption">VRChat_2026-09-11_23-41-42.427_1920x1080.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-11_23-36-31.436_1920x1080.png" loading="lazy"><div class="caption">VRChat_2026-09-11_23-36-31.436_1920x1080.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-11_23-34-38.701_1080x1920.png" loading="lazy"><div class="caption">VRChat_2026-09-11_23-34-38.701_1080x1920.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-01_06-12-33.233_3840x2160.png" loading="lazy"><div class="caption">VRChat_2026-09-01_06-12-33.233_3840x2160.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-01_06-10-11.241_3840x2160.png" loading="lazy"><div class="caption">VRChat_2026-09-01_06-10-11.241_3840x2160.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-09-01_06-08-50.923_3840x2160.png" loading="lazy"><div class="caption">VRChat_2026-09-01_06-08-50.923_3840x2160.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-08-29_13-50-01.776_3840x2160.png" loading="lazy"><div class="caption">VRChat_2026-08-29_13-50-01.776_3840x2160.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-08-22_08-34-22.706_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-08-22_08-34-22.706_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-08-22_08-33-40.828_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-08-22_08-33-40.828_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-07-23_23-24-43.584_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-07-23_23-24-43.584_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-07-23_23-22-54.620_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-07-23_23-22-54.620_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-07-23_06-15-55.239_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-07-23_06-15-55.239_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-06-02_22-18-40.487_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-06-02_22-18-40.487_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-01-04_09-59-13.803_2560x1440.png" loading="lazy"><div class="caption">VRChat_2026-01-04_09-59-13.803_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2026-01-02_21-21-00.322_1440x2560.png" loading="lazy"><div class="caption">VRChat_2026-01-02_21-21-00.322_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-12-20_07-26-20.593_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-12-20_07-26-20.593_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-12-20_07-16-40.741_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-12-20_07-16-40.741_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-12-17_08-20-46.638_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-12-17_08-20-46.638_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-12-13_10-05-29.626_2160x3840.png" loading="lazy"><div class="caption">VRChat_2025-12-13_10-05-29.626_2160x3840.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-12-10_11-47-01.004_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-12-10_11-47-01.004_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-30_10-49-32.324_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-11-30_10-49-32.324_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-25_08-38-30.387_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-11-25_08-38-30.387_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-25_08-31-44.201_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-11-25_08-31-44.201_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-03_23-21-50.025_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-11-03_23-21-50.025_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-01_13-35-09.456_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-11-01_13-35-09.456_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-01_12-15-42.350_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-11-01_12-15-42.350_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-11-01_12-10-06.847_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-11-01_12-10-06.847_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-10-24_18-54-31.774_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-10-24_18-54-31.774_2560x1440.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-10-24_18-54-07.072_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-10-24_18-54-07.072_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-10-24_18-51-50.114_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-10-24_18-51-50.114_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-10-22_00-19-32.444_1440x2560.png" loading="lazy"><div class="caption">VRChat_2025-10-22_00-19-32.444_1440x2560.png</div></div><div class="photo-box"><img src="https://raw.githubusercontent.com/ultimatesuperdog-prog/ultimatesuperdog.github.io/main/photo/VRChat_2025-10-22_00-17-05.451_2560x1440.png" loading="lazy"><div class="caption">VRChat_2025-10-22_00-17-05.451_2560x1440.png</div></div></div>
+
+    <div id="lightbox" class="lightbox">
+        <div id="lightboxClose" class="lightbox-close">×</div>
+        <button id="prevBtn" class="nav-btn prev-btn">←</button>
+        <img id="lightboxImage" alt="拡大画像" src="" class="slide-left">
+        <button id="nextBtn" class="nav-btn next-btn">→</button>
+    </div>
+
+    <script src="script.js"></script>
+
+
+
+                <script>const gallery = document.getElementById("gallery");
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxClose = document.getElementById("lightboxClose");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+let photoList = [];
+let currentIndex = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+
+async function loadPhotos() {
+
+    try {
+
+        const response = await fetch(
+            "https://api.github.com/repos/ultimatesuperdog-prog/ultimatesuperdog.github.io/contents/photo?t=" + Date.now()
         );
-        document.body.style.overflow =
-          "hidden";
-      }
-    );
-    gallery.appendChild(box);
-  });
 
-  function closeLightbox() {
-    lightbox.classList.remove(
-      "active"
-    );
+        const files = await response.json();
+
+        const photos = files
+            .filter(file =>
+                file.type === "file" &&
+                /\.(png|jpg|jpeg|webp|gif)$/i.test(file.name)
+            )
+            .sort((a, b) =>
+                b.name.localeCompare(a.name)
+            );
+
+        renderGallery(photos);
+
+    } catch (err) {
+
+        console.error(err);
+
+        gallery.innerHTML =
+            "<p>画像の取得に失敗しました</p>";
+    }
+}
+function renderGallery(files) {
+    gallery.innerHTML = "";
+    photoList = files;
+    files.forEach((file,index) => {
+        const box =  document.createElement("div");
+        box.className = "photo-box";
+        const img = document.createElement("img");
+        img.src = file.download_url;
+        img.loading = "lazy";
+        const caption = document.createElement("div");
+        caption.className = "caption";
+        caption.textContent = file.name;
+        box.append(img,caption);
+        box.addEventListener(
+            "click",
+            () => {
+                currentIndex = index;
+                openLightbox(currentIndex);
+
+            }
+        );
+        gallery.appendChild(box);
+    });
+}
+
+function closeLightbox() {
+
+    lightbox.classList.remove("active");
     lightboxImage.src = "";
+
     document.body.style.overflow = "";
-  }
-  /* × ボタン */
-  lightboxClose.addEventListener(
+}
+
+lightboxClose.addEventListener(
     "click",
-    function (event) {
-      event.stopPropagation();
-      closeLightbox();
-    }
-  );
-  /* 画像以外をクリック */
-  lightbox.addEventListener(
+    closeLightbox
+);
+
+lightbox.addEventListener(
     "click",
-    function (event) {
-      if (
-        event.target === lightbox
-      ) {
-        closeLightbox();
-      }
+    e => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
     }
-  );
-  /* ESCキーでも閉じる */
-  document.addEventListener(
+);
+document.addEventListener(
     "keydown",
-    function (event) {
-      if (
-        event.key === "Escape"
-      ) {
-        closeLightbox();
-      }
+    e => {
+
+        if(
+            !lightbox.classList.contains(
+                "active"
+            )
+        ){
+            return;
+        }
+
+        if(e.key === "ArrowRight"){
+
+            nextPhoto();
+
+        }
+
+        if(e.key === "ArrowLeft"){
+
+            prevPhoto();
+
+        }
+
+        if(e.key === "Escape"){
+
+            closeLightbox();
+
+        }
+
     }
-  );
+);
+
+function openLightbox(index){
+
+    lightboxImage.src =
+        photoList[index].download_url;
+
+    lightbox.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+}
+function nextPhoto(){
+
+    currentIndex++;
+
+    if(
+        currentIndex >=
+        photoList.length
+    ){
+        currentIndex = 0;
+    }
+
+    lightboxImage.src =
+        photoList[currentIndex]
+        .download_url;
+
+    animateImage("slide-left");
+}
+function prevPhoto(){
+
+    currentIndex--;
+
+    if(
+        currentIndex < 0
+    ){
+        currentIndex =
+            photoList.length - 1;
+    }
+
+    lightboxImage.src =
+        photoList[currentIndex]
+        .download_url;
+
+    animateImage("slide-right");
+}
+nextBtn.addEventListener(
+    "click",
+    nextPhoto
+);
+
+prevBtn.addEventListener(
+    "click",
+    prevPhoto
+);
+
+lightbox.addEventListener(
+    "touchstart",
+    e => {
+
+        touchStartX =
+            e.changedTouches[0].screenX;
+
+    }
+);
+
+lightbox.addEventListener(
+    "touchend",
+    e => {
+
+        touchEndX =
+            e.changedTouches[0].screenX;
+
+        const diff =
+            touchEndX -
+            touchStartX;
+
+        if(diff > 50){
+
+            prevPhoto();
+
+        }
+
+        if(diff < -50){
+
+            nextPhoto();
+
+        }
+
+    }
+);
+function animateImage(direction){
+
+    lightboxImage.classList.remove(
+        "slide-left",
+        "slide-right"
+    );
+
+    void lightboxImage.offsetWidth;
+
+    lightboxImage.classList.add(
+        direction
+    );
+}
+loadPhotos();
 </script>
-</body>
-</html>
+            
+        
+    </body>
